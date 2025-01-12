@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\GenderEnum;
+use App\Enums\RoleEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -12,6 +14,21 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    public function userImage()
+    {
+        return $this->hasOne(UserImage::class);
+    }
+
+    public function image()
+    {
+        return $this->userImage ? url('/storage/' . $this->userImage->image_path) : null;
+    }
+
+    public function fullName(): string
+    {
+        return $this->name . ' ' . $this->surname;
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -19,6 +36,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'surname',
+        'patronymic',
+        'phone_number',
+        'gender',
+        'role',
         'email',
         'password',
     ];
@@ -43,6 +65,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'gender' => GenderEnum::class,
+            'role' => RoleEnum::class,
         ];
     }
 }
