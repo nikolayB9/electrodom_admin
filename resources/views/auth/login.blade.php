@@ -8,12 +8,14 @@
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Введите логин и пароль</p>
 
-                <form method="POST" action="{{ route('login') }}" id="quickForm">
+                <form action="{{ route('login') }}" method="post"  id="quickForm">
                     @csrf
 
-                    <x-text-input type="email" name="email" placeholder="Email" icon="fas fa-envelope"></x-text-input>
+                    <x-input-with-icon type="email" name="email" placeholder="Эл.почта"
+                                       icon="fas fa-envelope" :messages="$errors->get('email')" required />
 
-                    <x-text-input type="password" name="password" placeholder="Пароль" icon="fas fa-lock"></x-text-input>
+                    <x-input-with-icon type="password" name="password" placeholder="Пароль"
+                                       icon="fas fa-lock" :messages="$errors->get('password')" required/>
 
                     <div class="row">
                         <div class="col-8">

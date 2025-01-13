@@ -20,7 +20,7 @@
         <b>Electro</b>Dom
     </div>
     <!-- User name -->
-    <div class="lockscreen-name mb-2">{{ auth()->user()->fullName() }}</div>
+    <div class="lockscreen-name mb-2">{{ auth()->user()->getFullName() }}</div>
 
     <!-- /.lockscreen-item -->
     <div class="help-block text-center mb-2">

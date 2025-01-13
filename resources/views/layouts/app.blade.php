@@ -11,6 +11,8 @@
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="{{ asset('adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
     <!-- overlayScrollbars -->
@@ -38,7 +40,7 @@
             <li class="nav-item">
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="nav-link bg-transparent border-0 hover" title="Выйти">
+                    <button type="submit" class="nav-link bg-transparent border-0 hover" title="Выйти из аккаунта">
                         <i class="fas fa-sign-out-alt"></i>
                     </button>
                 </form>
@@ -59,12 +61,12 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    <img src="{{ auth()->user()->image() ?? asset('adminlte/dist/img/default-avatar-160x160.jpg') }}"
+                    <img src="{{ auth()->user()->getImageUrl() ?? asset('adminlte/dist/img/default-avatar-160x160.jpg') }}"
                          class="img-circle elevation-2"
                          alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">{{ auth()->user()->fullName() }}</a>
+                    <a href="{{ route('profile.show') }}" class="d-block">{{ auth()->user()->getFullName() }}</a>
                 </div>
             </div>
 
@@ -117,9 +119,22 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- bs-custom-file-input -->
+<script src="{{ asset('adminlte/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+<!-- InputMask -->
+<script src="{{ asset('adminlte/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
 <!-- overlayScrollbars -->
 <script src="{{ asset('adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('adminlte/dist/js/adminlte.js') }}"></script>
+<!-- Page specific script -->
+<script>
+    $(function () {
+        bsCustomFileInput.init();
+
+        //Money Euro
+        $('[data-mask]').inputmask()
+    })
+</script>
 </body>
 </html>
