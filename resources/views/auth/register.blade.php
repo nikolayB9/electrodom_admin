@@ -1,11 +1,13 @@
 <x-guest-layout>
     <div class="register-box">
-        <div class="register-logo">
-            Регистрация администратора
+        <div class="login-logo">
+            <b>Electro</b>Dom
         </div>
 
         <div class="card mb-3">
             <div class="card-body register-card-body">
+                <p class="login-box-msg">Регистрация нового администратора</p>
+
                 <form action="{{ route('register') }}" method="post" enctype="multipart/form-data">
                     @csrf
 

@@ -11,26 +11,15 @@
                 <div class="col-md-5">
 
                     @if (session('status') === 'profile-updated')
-                        <div class="alert alert-success alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <i class="icon fas fa-check"></i>Профиль успешно обновлен.
-                        </div>
+                        <x-alert-success message="Профиль успешно обновлен."/>
                     @endif
 
                     @if (session('status') === 'password-updated')
-                        <div class="alert alert-success alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <i class="icon fas fa-check"></i>Пароль успешно обновлен.
-                        </div>
+                        <x-alert-success message="Пароль успешно обновлен."/>
                     @endif
 
                     @if($errors->userDeletion->isNotEmpty())
-                        <div class="alert alert-danger alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            @foreach($errors->userDeletion->get('password') as $error)
-                               <div><i class="icon fas fa-ban"></i>{{ $error }}</div>
-                            @endforeach
-                        </div>
+                        <x-alert-danger :messages="$errors->userDeletion->get('password')"/>
                     @endif
 
                     <!-- Profile -->

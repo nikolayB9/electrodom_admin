@@ -1,12 +1,17 @@
 <x-guest-layout>
     <div class="login-box">
         <div class="login-logo">
-            Вход в панель администратора
+            <b>Electro</b>Dom
         </div>
         <!-- /.login-logo -->
+
+        @if(!empty(session('status')))
+            <x-alert-success :icon="false" :message="session('status')"/>
+        @endif
+
         <div class="card">
             <div class="card-body login-card-body">
-                <p class="login-box-msg">Введите логин и пароль</p>
+                <p class="login-box-msg">Вход в панель администратора</p>
 
                 <form action="{{ route('login') }}" method="post"  id="quickForm">
                     @csrf
@@ -35,8 +40,11 @@
                     </div>
                 </form>
 
-                <p class="mt-3">
-                    <a href="{{ route('register') }}" class="text-center">Регистрация нового администратора</a>
+                <p class="mb-1 mt-2">
+                    <a href="{{ route('password.request') }}" class="text-center">Забыли пароль?</a>
+                </p>
+                <p class="mb-1">
+                    <a href="{{ route('register') }}" class="text-center">Регистрация</a>
                 </p>
             </div>
             <!-- /.login-card-body -->
