@@ -31,10 +31,14 @@ Route::middleware('guest')->group(function () {
         ->name('password.store');
 });
 
+Route::middleware(['auth', 'isAdmin'])->group(function () {
+    Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+});
+
 Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
-    Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+
     Route::get('/lockscreen', function () {
         return view('lockscreen');
     })->name('lockscreen');

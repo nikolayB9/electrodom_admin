@@ -1,4 +1,4 @@
-@props(['name', 'label' => false, 'placeholder' => 'Изображение', 'messages' => null])
+@props(['name', 'label' => false, 'placeholder' => 'Изображение', 'help' => false, 'messages' => null])
 
 <div class="form-group">
     @if($label)
@@ -14,7 +14,12 @@
             <label class="custom-file-label" for="{{ $name }}">{{ $placeholder }}</label>
         </div>
     </div>
+
     <x-input-error :messages="$messages"/>
+
+    @if($help)
+        <small class="form-text text-muted">{{ $help }}</small>
+    @endif
 </div>
 
 

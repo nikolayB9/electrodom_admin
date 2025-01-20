@@ -5,6 +5,7 @@ namespace App\Http\Requests\Profile;
 use App\Enums\GenderEnum;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\Rule;
 
 class ProfileUpdateRequest extends FormRequest
@@ -16,6 +17,8 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $imgParams = Config::get('images.user');
+
         return [
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['nullable', 'string', 'max:255'],
@@ -35,7 +38,14 @@ class ProfileUpdateRequest extends FormRequest
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
             'gender' => ['required', 'string', Rule::enum(GenderEnum::class)],
-            'image' => ['nullable', 'image', 'extensions:jpg,png', 'mimes:jpg,png', 'max:512', 'dimensions:width=160,height=160'],
+            'image' => [
+                'nullable',
+                'image',
+                "extensions:{$imgParams['extensions']}",
+                "mimes:{$imgParams['mimes']}",
+                "max:{$imgParams['maximum_size']}",
+                "dimensions:width={$imgParams['width']},height={$imgParams['height']}",
+            ],
             'delete_image' => ['nullable', 'string'],
         ];
     }

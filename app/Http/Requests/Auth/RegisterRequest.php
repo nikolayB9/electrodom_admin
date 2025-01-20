@@ -4,6 +4,7 @@ namespace App\Http\Requests\Auth;
 
 use App\Enums\GenderEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 
@@ -24,14 +25,28 @@ class RegisterRequest extends FormRequest
      */
     public function rules(): array
     {
+        $imgParams = config('images.user');
+
         return [
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['nullable', 'string', 'max:255'],
             'patronymic' => ['nullable', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
-            'phone_number' => ['nullable', 'string', 'regex:/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/', 'unique:users,phone_number'],
+            'phone_number' => [
+                'nullable',
+                'string',
+                'regex:/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/',
+                'unique:users,phone_number',
+            ],
             'gender' => ['nullable', 'string', Rule::enum(GenderEnum::class)],
-            'image' => ['nullable', 'image', 'extensions:jpg,png', 'mimes:jpg,png', 'max:512', 'dimensions:width=160,height=160'],
+            'image' => [
+                'nullable',
+                'image',
+                "extensions:{$imgParams['extensions']}",
+                "mimes:{$imgParams['mimes']}",
+                "max:{$imgParams['maximum_size']}",
+                "dimensions:width={$imgParams['width']},height={$imgParams['height']}",
+            ],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ];
     }

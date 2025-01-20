@@ -61,7 +61,7 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    <img src="{{ auth()->user()->getImageUrl() ?? asset('adminlte/dist/img/default-avatar-160x160.jpg') }}"
+                    <img src="{{ auth()->user()->getImageUrl() ?? asset('assets/img/default-avatar-160x160.jpg') }}"
                          class="img-circle elevation-2"
                          alt="User Image">
                 </div>
@@ -75,7 +75,7 @@
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('categories.index') }}" class="nav-link">
                             <i class="nav-icon fas fa-list"></i>
                             <p>Категории</p>
                         </a>

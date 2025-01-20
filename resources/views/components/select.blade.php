@@ -5,7 +5,7 @@
         <label for="{{ $name }}" class="mb-1">{{ $label }}</label>
     @endif
 
-    <select class="form-control" name="{{ $name }}" id="{{ $name }}">
+    <select class="custom-select" name="{{ $name }}" id="{{ $name }}">
         @if($disabled)
             <option disabled selected>{{ $disabled }}</option>
         @endif

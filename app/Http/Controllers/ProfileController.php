@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Enums\GenderEnum;
 use App\Http\Requests\Profile\ProfileUpdateRequest;
-use App\Models\UserImage;
 use App\Services\ProfileService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -36,9 +34,9 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(ProfileUpdateRequest $request, ProfileService $service): RedirectResponse
     {
-        $data = ProfileService::updateImage($request->user(), $request->validated());
+        $data = $service->processImageUpdating($request->user(), $request->validated());
 
         $request->user()->fill($data);
 
@@ -54,19 +52,17 @@ class ProfileController extends Controller
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request, ProfileService $service): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
         ]);
 
-        $user = $request->user();
-
-        $user->deleteImage();
+        $service->deleteImage($request->user());
 
         Auth::logout();
 
-        $user->delete();
+        $request->user()->delete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

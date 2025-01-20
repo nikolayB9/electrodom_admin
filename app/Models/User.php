@@ -8,7 +8,6 @@ use App\Enums\RoleEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -20,22 +19,18 @@ class User extends Authenticatable
         return $this->hasOne(UserImage::class);
     }
 
-    public function getImageUrl(): ?string
-    {
-        return $this->image ? url('/storage/' . $this->image->image_path) : null;
-    }
-
     public function getImagePath(): ?string
     {
-        return $this->image ? $this->image->image_path : null;
+        return UserImage::where('user_id', $this->id)
+            ->select('image')
+            ->pluck('image')
+            ->first();
     }
 
-    public function deleteImage(): void
+    public function getImageUrl(): ?string
     {
-        if (!empty($this->image)) {
-            Storage::disk('public')->delete($this->getImagePath());
-            $this->image()->delete();
-        }
+        $imagePath = $this->getImagePath();
+        return $imagePath ? url('/storage/' . $imagePath) : null;
     }
 
     public function getGender(): string

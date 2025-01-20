@@ -27,7 +27,7 @@
                         <div class="card-body box-profile">
                             <div class="text-center">
                                 <img class="profile-user-img img-fluid img-circle"
-                                     src="{{ $user->getImageUrl() ?? asset('adminlte/dist/img/default-avatar-160x160.jpg') }}"
+                                     src="{{ $user->getImageUrl() ?? asset('assets/img/default-avatar-160x160.jpg') }}"
                                      alt="User profile picture">
                             </div>
 
@@ -114,16 +114,18 @@
                         </div>
                         <!-- /.card-body -->
 
+                        <!-- Button trigger modal delete account -->
                         <div class="card-footer">
                             <button type="button" class="btn btn-danger float-right" data-toggle="modal"
-                                    data-target="#modal-delete">
+                                    data-target="#modal-delete-account">
                                 Удалить
                             </button>
                         </div>
                     </div>
                     <!-- /.card -->
 
-                    <div class="modal fade" id="modal-delete">
+                    <!-- Modal delete account -->
+                    <div class="modal fade" id="modal-delete-account">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">

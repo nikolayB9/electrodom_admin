@@ -44,7 +44,9 @@
 
                     <x-select name="gender" :values="$genders" disabled="Выберите пол"/>
 
-                    <x-input-file name="image" :messages="$errors->get('image')"/>
+                    <x-input-file name="image"
+                                  help="Размер {{ $imgParams['width'] }}x{{ $imgParams['height'] }} px, не более {{ $imgParams['maximum_size'] }} Kb"
+                                  :messages="$errors->get('image')"/>
 
                     <x-input-with-icon type="password"
                                        name="password"
