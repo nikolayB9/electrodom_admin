@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Attribute;
+use App\Models\AttributeCategory;
 use App\Models\Category;
 use App\Models\MeasureUnit;
 use App\Models\User;
@@ -168,9 +169,118 @@ class DatabaseSeeder extends Seeder
                 'measure_unit_id' => null,
             ],
         ];
+
+        $attributeCategory = [
+            [
+                'category_id' => 1,
+                'attribute_id' => 1,
+            ],
+            [
+                'category_id' => 1,
+                'attribute_id' => 5,
+            ],
+            [
+                'category_id' => 1,
+                'attribute_id' => 6,
+            ],
+            [
+                'category_id' => 2,
+                'attribute_id' => 1,
+            ],
+            [
+                'category_id' => 2,
+                'attribute_id' => 5,
+            ],
+            [
+                'category_id' => 2,
+                'attribute_id' => 6,
+            ],
+            [
+                'category_id' => 2,
+                'attribute_id' => 7,
+            ],
+            [
+                'category_id' => 3,
+                'attribute_id' => 1,
+            ],
+            [
+                'category_id' => 3,
+                'attribute_id' => 5,
+            ],
+            [
+                'category_id' => 3,
+                'attribute_id' => 6,
+            ],
+            [
+                'category_id' => 3,
+                'attribute_id' => 7,
+            ],
+            [
+                'category_id' => 3,
+                'attribute_id' => 17,
+            ],
+            [
+                'category_id' => 4,
+                'attribute_id' => 1,
+            ],
+            [
+                'category_id' => 4,
+                'attribute_id' => 5,
+            ],
+            [
+                'category_id' => 4,
+                'attribute_id' => 6,
+            ],
+            [
+                'category_id' => 4,
+                'attribute_id' => 7,
+            ],
+            [
+                'category_id' => 5,
+                'attribute_id' => 1,
+            ],
+            [
+                'category_id' => 5,
+                'attribute_id' => 5,
+            ],
+            [
+                'category_id' => 5,
+                'attribute_id' => 6,
+            ],
+            [
+                'category_id' => 5,
+                'attribute_id' => 7,
+            ],
+            [
+                'category_id' => 8,
+                'attribute_id' => 1,
+            ],
+            [
+                'category_id' => 8,
+                'attribute_id' => 8,
+            ],
+            [
+                'category_id' => 8,
+                'attribute_id' => 9,
+            ],
+            [
+                'category_id' => 10,
+                'attribute_id' => 1,
+            ],
+            [
+                'category_id' => 10,
+                'attribute_id' => 8,
+            ],
+            [
+                'category_id' => 10,
+                'attribute_id' => 9,
+            ],
+        ];
+
         Category::insert($categories);
         MeasureUnit::insert($measureUnits);
         Attribute::insert($attributes);
+        AttributeCategory::insert($attributeCategory);
 
 //        User::factory()->create([
 //            'name' => 'Test User',

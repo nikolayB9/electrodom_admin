@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Category\StoreRequest;
+use App\Http\Requests\Category\UpdateAttributesRequest;
 use App\Http\Requests\Category\UpdateRequest;
 use App\Models\Category;
+use App\Services\AttributeService;
 use App\Services\CategoryService;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
@@ -35,9 +38,13 @@ class CategoryController extends Controller
             ->with('status', 'Категория "' . $category->title . '" успешно добавлена.');
     }
 
-    public function show(Category $category)
+    public function show(Category $category, AttributeService $attributeService)
     {
-        return view('category.show', compact('category'));
+        $categoryAttributes = $category->attributesWithUnitTitle();
+        $parentAttributesIds = $category->attributesIdsOfTheParentCategory();
+        $attributes = $attributeService->getWithUnitTitle();
+        return view('category.show', compact('category',
+            'categoryAttributes', 'parentAttributesIds', 'attributes'));
     }
 
     public function edit(Category $category)
@@ -53,7 +60,15 @@ class CategoryController extends Controller
     public function update(UpdateRequest $request, Category $category)
     {
         $this->categoryService->change($category, $request->validated());
-        return redirect()->route('categories.show', $category->id)->with('status', 'Категория успешно обновлена.');
+        return redirect()->route('categories.show', $category->id)
+            ->with('status', 'Категория успешно обновлена.');
+    }
+
+    public function updateAttributes(UpdateAttributesRequest $request, Category $category)
+    {
+        $this->categoryService->changeAttributes($category, $request->validated());
+        return redirect()->route('categories.show', $category->id)
+            ->with('status', 'Атрибуты категории обновлены.');
     }
 
     public function destroy(Category $category)

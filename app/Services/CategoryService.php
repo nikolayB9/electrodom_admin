@@ -61,8 +61,8 @@ class CategoryService extends ImageHandlerService
         $data = $this->processImageUpdating($category, $data);
 
         $category->update([
-           'title' => $data['title'],
-           'image' => $data['image'],
+            'title' => $data['title'],
+            'image' => $data['image'],
         ]);
 
         if ($category->parentCategoryId() == $data['parent_category']
@@ -91,6 +91,17 @@ class CategoryService extends ImageHandlerService
             /* Reducing all lft and rgt values to the right of the previous category placement */
             /* (compensating for moving the category) */
             $this->doDecrementLftAndRgt($right, $width);
+        });
+    }
+
+    public function changeAttributes(Category $category, array $data): void
+    {
+        DB::transaction(function () use ($category, $data) {
+            $category->attributes()->sync($data['attributes_ids']);
+
+            foreach ($category->childCategories() as $childCategory) {
+                $childCategory->attributes()->syncWithoutDetaching($data['attributes_ids']);
+            }
         });
     }
 

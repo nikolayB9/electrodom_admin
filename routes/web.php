@@ -12,8 +12,12 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('categories', \App\Http\Controllers\CategoryController::class);
+    Route::patch('categories/{category}/update-attributes', [\App\Http\Controllers\CategoryController::class, 'updateAttributes'])
+        ->name('categories.update.attributes');
+
     Route::resource('attributes', \App\Http\Controllers\AttributeController::class)
         ->except('show');
+
     Route::resource('measure-units', \App\Http\Controllers\MeasureUnitController::class)
         ->except(['show', 'create', 'edit']);
 });
