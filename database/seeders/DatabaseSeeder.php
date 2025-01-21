@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Attribute;
 use App\Models\Category;
+use App\Models\MeasureUnit;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -73,7 +75,102 @@ class DatabaseSeeder extends Seeder
                 'rgt' => 20,
             ],
         ];
+        $measureUnits = [
+            [
+                'title' => 'кг',
+            ],
+            [
+                'title' => 'г',
+            ],
+            [
+                'title' => 'см',
+            ],
+            [
+                'title' => 'Вт',
+            ],
+            [
+                'title' => 'Лм',
+            ],
+            [
+                'title' => 'мм',
+            ],
+            [
+                'title' => 'град',
+            ],
+        ];
+        $attributes = [
+            [
+                'title' => 'Бренд',
+                'measure_unit_id' => null,
+            ],
+            [
+                'title' => 'Степень защиты',
+                'measure_unit_id' => null,
+            ],
+            [
+                'title' => 'Вес',
+                'measure_unit_id' => 1,
+            ],
+            [
+                'title' => 'Вес',
+                'measure_unit_id' => 2,
+            ],
+            [
+                'title' => 'Ширина',
+                'measure_unit_id' => 3,
+            ],
+            [
+                'title' => 'Длина',
+                'measure_unit_id' => 3,
+            ],
+            [
+                'title' => 'Высота',
+                'measure_unit_id' => 3,
+            ],
+            [
+                'title' => 'Мощность',
+                'measure_unit_id' => 4,
+            ],
+            [
+                'title' => 'Световой поток',
+                'measure_unit_id' => 5,
+            ],
+            [
+                'title' => 'Тип цоколя',
+                'measure_unit_id' => null,
+            ],
+            [
+                'title' => 'Диаметр',
+                'measure_unit_id' => 6,
+            ],
+            [
+                'title' => 'Гарантия',
+                'measure_unit_id' => null,
+            ],
+            [
+                'title' => 'Типоразмер',
+                'measure_unit_id' => null,
+            ],
+            [
+                'title' => 'Назначение',
+                'measure_unit_id' => null,
+            ],
+            [
+                'title' => 'Индекс цветопередачи Ra',
+                'measure_unit_id' => null,
+            ],
+            [
+                'title' => 'Угол свечения',
+                'measure_unit_id' => 7,
+            ],
+            [
+                'title' => 'Способ установки',
+                'measure_unit_id' => null,
+            ],
+        ];
         Category::insert($categories);
+        MeasureUnit::insert($measureUnits);
+        Attribute::insert($attributes);
 
 //        User::factory()->create([
 //            'name' => 'Test User',

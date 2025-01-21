@@ -67,10 +67,10 @@
                                               :messages="$errors->get('image')"/>
 
                                 <x-input-checkbox name="delete_image" label="Удалить изображение"
-                                                  disabled="{{ empty($user->getImageUrl()) }}"/>
+                                                  disabled="{{ empty($userImageUrl) }}"/>
 
-                                @if(!empty($user->getImageUrl()))
-                                    <img src="{{ $user->getImageUrl() }}" alt="user image">
+                                @if(!empty($userImageUrl))
+                                    <img src="{{ $userImageUrl }}" alt="user image">
                                 @endif
 
                             </div>

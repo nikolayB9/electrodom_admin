@@ -12,6 +12,10 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('categories', \App\Http\Controllers\CategoryController::class);
+    Route::resource('attributes', \App\Http\Controllers\AttributeController::class)
+        ->except('show');
+    Route::resource('measure-units', \App\Http\Controllers\MeasureUnitController::class)
+        ->except(['show', 'create', 'edit']);
 });
 
 require __DIR__ . '/auth.php';

@@ -80,6 +80,12 @@
                             <p>Категории</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('attributes.index') }}" class="nav-link">
+                            <i class="nav-icon fas fa-tags"></i>
+                            <p>Атрибуты</p>
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->

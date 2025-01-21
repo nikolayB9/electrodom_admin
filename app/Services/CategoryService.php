@@ -3,9 +3,7 @@
 namespace App\Services;
 
 use App\Models\Category;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class CategoryService extends ImageHandlerService
 {
