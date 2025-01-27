@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Category;
+namespace App\Http\Requests\Product;
 
 use App\Services\CategoryService;
-use App\Validation\Category\CheckingParentCategoryLevel;
-use App\Validation\Category\CheckingPreviousAndParentCategoryHierarchy;
+use App\Services\ProductService;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -24,12 +24,16 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        $imgParams = CategoryService::getImgParams();
+        $imgParams = ProductService::getImgParams();
+        $categoryService = new CategoryService();
+        $lastLevelCategoryIds = $categoryService->getLastNestingLevelCategories()->pluck('id')->toArray();
 
         return [
-            'title' => ['required', 'string', 'max:255', 'unique:categories,title'],
-            'parent_category' => ['nullable', 'integer', 'exists:categories,id'],
-            'previous_category' => ['nullable', 'integer', 'exists:categories,id'],
+            'title' => ['required', 'string', 'max:255', 'unique:products,title'],
+            'description' => ['nullable', 'string'],
+            'price' => ['required', 'decimal:0,2', 'gte:0'],
+            'count' => ['required', 'integer', 'gte:0'],
+            'category_id' => ['required', 'integer', 'exists:categories,id', Rule::in($lastLevelCategoryIds)],
             'image' => [
                 'nullable',
                 'image',
@@ -38,18 +42,7 @@ class StoreRequest extends FormRequest
                 "max:{$imgParams['maximum_size']}",
                 "dimensions:width={$imgParams['width']},height={$imgParams['height']}",
             ],
-        ];
-    }
-
-    /**
-     * If the parent category is passed, we check that it can have descendants.
-     * If the previous category is passed, we check that it is a descendant of the parent category.
-     */
-    public function after(): array
-    {
-        return [
-            new CheckingParentCategoryLevel(),
-            new CheckingPreviousAndParentCategoryHierarchy(),
+            'is_published' => ['nullable', 'string', 'in:on'],
         ];
     }
 }

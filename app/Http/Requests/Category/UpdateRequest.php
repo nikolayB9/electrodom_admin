@@ -3,10 +3,10 @@
 namespace App\Http\Requests\Category;
 
 use App\Models\Category;
-use App\Validation\CheckingNewParentCategoryLevel;
-use App\Validation\CheckingPreviousAndParentCategoryHierarchy;
+use App\Services\CategoryService;
+use App\Validation\Category\CheckingNewParentCategoryLevel;
+use App\Validation\Category\CheckingPreviousAndParentCategoryHierarchy;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
@@ -26,7 +26,7 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        $imgParams = config('images.category');
+        $imgParams = CategoryService::getImgParams();
 
         return [
             'title' => ['required', 'string', 'max:255',  Rule::unique(Category::class)->ignore(request()->category)],
@@ -45,7 +45,8 @@ class UpdateRequest extends FormRequest
     }
 
     /**
-     * If the parent category is passed, we check that it can have descendants.
+     * If the parent category is passed, we check that the category/its descendants does not belong to products.
+     * If the parent category is passed, we check if it can have a category as a descendant.
      * If the previous category is passed, we check that it is a descendant of the parent category.
      */
     public function after(): array

@@ -1,7 +1,7 @@
-@props(['name', 'label', 'disabled' => false, 'checked' => false])
+@props(['name', 'label', 'disabled' => false, 'checked' => false, 'class' => 'icheck-danger'])
 
 <div class="form-group clearfix">
-    <div class="icheck-danger d-inline">
+    <div class="{{ $class }} d-inline">
         <input type="checkbox" name="{{ $name }}" id="{{ $name }}"
             @disabled($disabled) @checked($checked)>
         <label for="{{ $name }}">

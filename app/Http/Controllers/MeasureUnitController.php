@@ -32,7 +32,7 @@ class MeasureUnitController extends Controller
 
     public function destroy(MeasureUnit $measureUnit)
     {
-        if (!$measureUnit->canBeDeleted()) {
+        if ($measureUnit->belongsToTheAttribute()) {
             return back()->withErrors(['measureUnitDeletion' => 'You cannot delete a unit of measurement "' . $measureUnit->title . '" that is used by at least one attribute']);
         }
         $title = $measureUnit->title;

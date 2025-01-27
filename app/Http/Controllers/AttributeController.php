@@ -17,13 +17,8 @@ class AttributeController extends Controller
     public function index()
     {
         $attributes = $this->attributeService->getWithUnitTitle();
-        return view('attribute.index', compact('attributes'));
-    }
-
-    public function create()
-    {
         $measureUnits = MeasureUnit::orderBy('title')->get();
-        return view('attribute.create', compact('measureUnits'));
+        return view('attribute.index', compact('attributes', 'measureUnits'));
     }
 
     public function store(StoreRequest $request)
@@ -31,12 +26,6 @@ class AttributeController extends Controller
         $data = $this->attributeService->processNewMeasureUnit($request->validated());
         $attribute = Attribute::create($data);
         return redirect()->route('attributes.index')->with('status', 'Атрибут "' . $attribute->fullTitle() . '" успешно сохранен.');
-    }
-
-    public function edit(Attribute $attribute)
-    {
-        $measureUnits = MeasureUnit::orderBy('title')->get();
-        return view('attribute.edit', compact('attribute', 'measureUnits'));
     }
 
     public function update(UpdateRequest $request, Attribute $attribute)
@@ -48,9 +37,10 @@ class AttributeController extends Controller
 
     public function destroy(Attribute $attribute)
     {
-//        if (!empty($attribute->categories()->first())) {
-//            return back()->withErrors(['deleteError' => 'You cannot delete an attribute "' . $attribute->title . '" that is used by at least one category']);
-//        }
+        if ($attribute->belongsToTheCategory()) {
+            return back()->withErrors('You cannot delete an attribute "' . $attribute->fullTitle() . '" that is used by at least one category');
+        }
+
         $fullTitle = $attribute->fullTitle();
         $attribute->delete();
         return redirect()->route('attributes.index')->with('status', 'Атрибут "' . $fullTitle . '" удален.');

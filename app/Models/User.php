@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\GenderEnum;
 use App\Enums\RoleEnum;
+use App\Services\ProfileService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -22,15 +23,19 @@ class User extends Authenticatable
     public function getImagePath(): ?string
     {
         return UserImage::where('user_id', $this->id)
-            ->select('image')
             ->pluck('image')
             ->first();
     }
 
-    public function getImageUrl(): ?string
+    public function hasImage(): bool
+    {
+        return !empty($this->getImagePath());
+    }
+
+    public function getImageUrl(): string
     {
         $imagePath = $this->getImagePath();
-        return $imagePath ? url('/storage/' . $imagePath) : null;
+        return $imagePath ? url('/storage/' . $imagePath) : url(ProfileService::getPathToDefault());
     }
 
     public function getGender(): string

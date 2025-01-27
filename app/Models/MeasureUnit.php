@@ -9,8 +9,13 @@ class MeasureUnit extends Model
     protected $table = 'measure_units';
     protected $guarded = false;
 
-    public function canBeDeleted(): bool
+    public function attributes(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return empty(Attribute::where('measure_unit_id', $this->id)->first());
+        return $this->hasMany(Attribute::class, 'measure_unit_id', 'id');
+    }
+
+    public function belongsToTheAttribute(): bool
+    {
+        return (bool)$this->attributes()->select('id')->first();
     }
 }

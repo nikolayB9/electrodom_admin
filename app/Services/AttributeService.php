@@ -13,7 +13,7 @@ class AttributeService
     public function getWithUnitTitle(): \Illuminate\Support\Collection
     {
         $attributes = DB::select(
-            'SELECT a.id, CONCAT_WS(", ", a.title, m_u.title) AS fullTitle
+            'SELECT a.id, a.title, m_u.id AS measureUnitId, CONCAT_WS(", ", a.title, m_u.title) AS fullTitle
             FROM attributes AS a LEFT JOIN measure_units AS m_u ON a.measure_unit_id = m_u.id
             ORDER BY a.title'
         );

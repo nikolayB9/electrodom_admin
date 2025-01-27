@@ -27,7 +27,11 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register', ['genders' => GenderEnum::getValues(), 'imgParams' => $this->profileService->getImgParams()]);
+
+        return view('auth.register', [
+            'genders' => GenderEnum::getValues(),
+            'imgParams' => $this->profileService::getImgParams(),
+        ]);
     }
 
     /**

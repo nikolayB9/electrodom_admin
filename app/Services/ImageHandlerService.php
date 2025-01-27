@@ -12,7 +12,7 @@ abstract class ImageHandlerService
      */
     public function saveToDisk(UploadedFile $image): string
     {
-        return Storage::disk($this->getDiskToSave())->putFile($this->getPathToSave(), $image);
+        return Storage::disk($this->getDiskToSave())->putFile(static::getPathToSave(), $image);
     }
 
     public function deleteFromDisk(string $imagePath): void
@@ -20,9 +20,11 @@ abstract class ImageHandlerService
         Storage::disk($this->getDiskToSave())->delete($imagePath);
     }
 
-    abstract public function getPathToSave(): string;
+    abstract public static function getPathToSave(): string;
 
-    abstract public function getImgParams(): array;
+    abstract public static function getPathToDefault(): string;
+
+    abstract public static function getImgParams(): array;
 
     protected function getDiskToSave(): string
     {

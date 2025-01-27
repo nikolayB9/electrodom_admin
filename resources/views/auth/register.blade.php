@@ -42,7 +42,12 @@
                                        data-mask=""
                                        inputmode="text"/>
 
-                    <x-select name="gender" :values="$genders" disabled="Выберите пол"/>
+                    <x-select name="gender">
+                        <option disabled selected>Выберите пол</option>
+                        @foreach($genders as $gender)
+                            <option @selected(old('gender') == $gender)>{{ $gender }}</option>
+                        @endforeach
+                    </x-select>
 
                     <x-input-file name="image"
                                   help="Размер {{ $imgParams['width'] }}x{{ $imgParams['height'] }} px, не более {{ $imgParams['maximum_size'] }} Kb"

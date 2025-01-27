@@ -58,19 +58,26 @@
                                                     data-mask=""
                                                     inputmode="text"/>
 
-                                <x-select name="gender" :selected="$user->getGender()" label="Пол"
-                                          :values="$genders"/>
+                                <x-select name="gender" label="Пол">
+                                    @foreach($genders as $gender)
+                                        <option @selected($user->getGender() == $gender)
+                                            @selected(old('gender') == $gender)>
+                                            {{ $gender }}
+                                        </option>
+                                    @endforeach
+                                </x-select>
 
                                 <x-input-file name="image"
                                               label="Изображение"
                                               placeholder="Загрузить изображение"
+                                              help="Размер {{ $imgParams['width'] }}x{{ $imgParams['height'] }} px, не более {{ $imgParams['maximum_size'] }} Kb"
                                               :messages="$errors->get('image')"/>
 
                                 <x-input-checkbox name="delete_image" label="Удалить изображение"
-                                                  disabled="{{ empty($userImageUrl) }}"/>
+                                                  disabled="{{ !$user->hasImage() }}"/>
 
-                                @if(!empty($userImageUrl))
-                                    <img src="{{ $userImageUrl }}" alt="user image">
+                                @if($user->hasImage())
+                                    <img src="{{ $user->getImageUrl() }}" alt="user image">
                                 @endif
 
                             </div>

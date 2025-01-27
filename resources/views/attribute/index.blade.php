@@ -10,15 +10,17 @@
             <div class="row">
                 <div class="col-md-8 mb-3">
 
-                    <a href="{{ route('attributes.create') }}"
-                       type="button"
-                       class="btn btn-primary btn-flat mb-3 mr-2">
+                    <!-- Button trigger modal create attribute -->
+                    <button class="btn btn-primary mb-3 mr-2"
+                            type="button"
+                            data-toggle="modal"
+                            data-target="#modal-create-attribute">
                         Добавить атрибут
-                    </a>
+                    </button>
 
                     <a href="{{ route('measure-units.index') }}"
                        type="button"
-                       class="btn btn-primary btn-flat mb-3">
+                       class="btn btn-primary mb-3">
                         Единицы измерения
                     </a>
 
@@ -30,31 +32,101 @@
                         <x-alert-danger :messages="$errors->get('attributeDeletion')"/>
                     @endif
 
-                    <div class="card" style="border-radius: 0;">
+                    @if(!empty($errors->messages()))
+                        @foreach($errors->messages() as $message)
+                            <x-alert-danger :messages="$message"/>
+                        @endforeach
+                    @endif
+
+                    <div class="card">
                         <div class="card-body table-responsive p-0">
-                            <table class="table table-hover">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Наименование</th>
+                                    <th>Действия</th>
+                                </tr>
+                                </thead>
                                 <tbody>
-                                @php($i = 1)
                                 @foreach($attributes as $attribute)
                                     <tr>
                                         <td style="width: 10px; padding-right: 0;">
-                                            {{ $i }}.
+                                            {{ $attribute->id }}.
                                         </td>
                                         <td>
                                             {{ $attribute->fullTitle }}
                                         </td>
                                         <td>
-                                            <a href="{{ route('attributes.edit', $attribute->id) }}" class="btn btn-primary btn-sm btn-flat mr-2">
+                                            <!-- Button trigger modal edit attribute -->
+                                            <button class="btn btn-primary btn-sm mr-2"
+                                                    data-toggle="modal"
+                                                    data-target="#modal-edit-attribute{{ $attribute->id }}">
                                                 Редактировать
-                                            </a>
+                                            </button>
+
                                             <!-- Button trigger modal delete attribute -->
-                                            <button class="btn btn-danger btn-sm btn-flat"
+                                            <button class="btn btn-danger btn-sm"
                                                     data-toggle="modal"
                                                     data-target="#modal-delete-attribute{{ $attribute->id }}">
                                                 Удалить
                                             </button>
                                         </td>
                                     </tr>
+
+                                    <!-- Modal edit attribute -->
+                                    <div class="modal fade" id="modal-edit-attribute{{ $attribute->id }}">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Редактировать атрибут
+                                                        "{{ $attribute->fullTitle }}"
+                                                    </h5>
+                                                </div>
+
+                                                <form action="{{ route('attributes.update', $attribute->id) }}"
+                                                      method="post">
+                                                    @csrf
+                                                    @method('patch')
+                                                    <div class="modal-body">
+
+                                                        <x-input-with-label name="title"
+                                                                            :value="$attribute->title"
+                                                                            label="Наименование"
+                                                                            placeholder="Введите наименование атрибута"
+                                                                            required/>
+
+                                                        <x-select name="measure_unit_id"
+                                                                  label="Единица измерения">
+                                                            <option value="" selected>-</option>
+                                                            @foreach($measureUnits as $measureUnit)
+                                                                <option value="{{ $measureUnit->id }}"
+                                                                @selected($measureUnit->id == $attribute->measureUnitId)>
+                                                                    {{ $measureUnit->title }}
+                                                                </option>
+                                                            @endforeach
+                                                        </x-select>
+
+                                                        <x-input-with-label name="new_measure_unit"
+                                                                            value=""
+                                                                            placeholder="Создать новую единицу измерения"/>
+
+                                                    </div>
+
+                                                    <div class="modal-footer justify-content-end">
+                                                        <button type="button" class="btn btn-default"
+                                                                data-dismiss="modal">
+                                                            Отмена
+                                                        </button>
+                                                        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                    </div>
+                                    <!-- /.modal -->
 
                                     <!-- Modal delete attribute -->
                                     <div class="modal fade" id="modal-delete-attribute{{ $attribute->id }}">
@@ -72,12 +144,14 @@
                                                     @method('delete')
                                                     <div class="modal-body">
                                                         <div class="mb-3 text-sm">
-                                                            Если атрибут принадлежит хотя бы одной категории, его нельзя удалить.
+                                                            Если атрибут принадлежит хотя бы одной категории, его нельзя
+                                                            удалить.
                                                         </div>
                                                     </div>
 
                                                     <div class="modal-footer justify-content-end">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        <button type="button" class="btn btn-default"
+                                                                data-dismiss="modal">
                                                             Отмена
                                                         </button>
                                                         <button type="submit" class="btn btn-danger">Удалить</button>
@@ -90,13 +164,62 @@
                                     </div>
                                     <!-- /.modal -->
 
-                                    @php($i++)
                                 @endforeach
                                 </tbody>
                             </table>
                         </div>
                         <!-- /.card-body -->
                     </div>
+
+                    <!-- Modal create attribute -->
+                    <div class="modal fade" id="modal-create-attribute">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Добавить атрибут</h5>
+                                </div>
+
+                                <form action="{{ route('attributes.store') }}"
+                                      method="post">
+                                    @csrf
+                                    <div class="modal-body">
+
+                                        <x-input-with-label name="title"
+                                                            value=""
+                                                            label="Наименование"
+                                                            placeholder="Введите наименование атрибута"
+                                                            required/>
+
+                                        <x-select name="measure_unit_id"
+                                                  label="Единица измерения">
+                                            <option value="" selected>-</option>
+                                            @foreach($measureUnits as $measureUnit)
+                                                <option value="{{ $measureUnit->id }}">
+                                                    {{ $measureUnit->title }}
+                                                </option>
+                                            @endforeach
+                                        </x-select>
+
+                                        <x-input-with-label name="new_measure_unit"
+                                                            value=""
+                                                            placeholder="Создать новую единицу измерения"/>
+
+                                    </div>
+
+                                    <div class="modal-footer justify-content-end">
+                                        <button type="button" class="btn btn-default"
+                                                data-dismiss="modal">
+                                            Отмена
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">Добавить</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
                 </div>
             </div>
             <!-- /.row -->

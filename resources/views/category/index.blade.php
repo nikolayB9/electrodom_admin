@@ -12,7 +12,7 @@
 
                     <a href="{{ route('categories.create') }}"
                        type="button"
-                       class="btn btn-primary btn-flat mb-3">
+                       class="btn btn-primary mb-3">
                         Добавить категорию
                     </a>
 
@@ -31,17 +31,16 @@
 
                                 <div class="btn-group dropright">
                                     <a type="button"
-                                       href="{{ route('categories.show', $category->id) }}"
-                                       class="btn btn-default btn-flat">
+                                       href="{{ route('categories.edit', $category->id) }}"
+                                       class="btn btn-default">
                                         {{ $category->title }}
                                     </a>
-                                    <button type="button" class="btn btn-default btn-flat dropdown-toggle dropdown-icon"
+                                    <button type="button" class="btn btn-default dropdown-toggle dropdown-icon"
                                             data-toggle="dropdown">
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
 
                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item" href="{{ route('categories.show', $category->id) }}">Просмотр</a>
                                         <a href="{{ route('categories.edit', $category->id) }}"
                                            class="dropdown-item">Редактировать</a>
 

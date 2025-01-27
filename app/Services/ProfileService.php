@@ -55,12 +55,17 @@ class ProfileService extends ImageHandlerService
         }
     }
 
-    public function getPathToSave(): string
+    public static function getPathToSave(): string
     {
         return config('images.user.path_to_save');
     }
 
-    public function getImgParams(): array
+    public static function getPathToDefault(): string
+    {
+        return config('images.user.default');
+    }
+
+    public static function getImgParams(): array
     {
         return config('images.user');
     }

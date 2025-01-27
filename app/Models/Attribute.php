@@ -23,4 +23,14 @@ class Attribute extends Model
     {
         return $this->measureUnit ? $this->title . ', ' . $this->measureUnit->title : $this->title;
     }
+
+    public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
+    public function belongsToTheCategory(): bool
+    {
+        return (bool)$this->categories()->select('id')->first();
+    }
 }

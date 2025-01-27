@@ -2,22 +2,51 @@
 
 namespace App\Models;
 
+use App\Services\CategoryService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class Category extends Model
 {
     protected $table = 'categories';
     protected $guarded = false;
 
+    public function attributes(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Attribute::class);
+    }
+
+    public function products(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function hasProductsOrAChildCategoryHasProducts(): bool
+    {
+        $categoriesIds = Category::where('lft', '>=', $this->lft)
+            ->where('rgt', '<=', $this->rgt)
+            ->pluck('id')
+            ->toArray();
+
+        return (bool)Product::whereIn('category_id', $categoriesIds)->select('id')->first();
+    }
+
+    public function hasImage(): bool
+    {
+        return !empty($this->image);
+    }
+
+    public function getImageUrl(): string
+    {
+        return $this->image ? url('/storage/' . $this->image) : url(CategoryService::getPathToDefault());
+    }
+
     public function parentCategoryId(): ?int
     {
         return Category::where('lft', '<', $this->lft)
             ->where('rgt', '>', $this->rgt)
             ->orderBy('rgt', 'asc')
-            ->select('id')
             ->pluck('id')
             ->first();
     }
@@ -25,19 +54,16 @@ class Category extends Model
     public function previousCategoryId(): ?int
     {
         return Category::where('rgt', '=', $this->lft - 1)
-            ->select('id')
             ->pluck('id')
             ->first();
     }
 
-    public function getImageUrl(): ?string
+    public function childCategories(): Collection
     {
-        return $this->image ? url('/storage/' . $this->image) : null;
-    }
-
-    public function attributes(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    {
-        return $this->belongsToMany(Attribute::class);
+        return Category::where('lft', '>', $this->lft)
+            ->where('rgt', '<', $this->rgt)
+            ->select('id')
+            ->get();
     }
 
     /**
@@ -55,6 +81,13 @@ class Category extends Model
         return collect($attributes);
     }
 
+    public function attributesIds(): array
+    {
+        return $this->attributes()
+            ->pluck('id')
+            ->toArray();
+    }
+
     public function attributesIdsOfTheParentCategory(): array
     {
         $parentCategory = Category::where('lft', '<', $this->lft)
@@ -64,15 +97,7 @@ class Category extends Model
             ->first();
 
         return $parentCategory
-            ? $parentCategory->attributes()->select('id')->pluck('id')->toArray()
+            ? $parentCategory->attributesIds()
             : [];
-    }
-
-    public function childCategories(): Collection
-    {
-        return Category::where('lft', '>', $this->lft)
-            ->where('rgt', '<', $this->rgt)
-            ->select('id')
-            ->get();
     }
 }

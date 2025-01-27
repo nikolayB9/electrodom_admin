@@ -19,8 +19,28 @@ class CategoryService extends ImageHandlerService
             WHERE child.lft BETWEEN parent.lft AND parent.rgt
             GROUP BY child.id
             ORDER BY child.lft'
+
         );
 
+        return collect($categories);
+    }
+
+    /**
+     * Get the categories of the last nesting level.
+     */
+    public function getLastNestingLevelCategories(): \Illuminate\Support\Collection
+    {
+        $maxLevel = config('categories.max_nesting_level');
+
+        $categories = DB::select(
+            'SELECT child.id, child.title
+            FROM categories AS child,
+                 categories AS parent
+            WHERE child.lft BETWEEN parent.lft AND parent.rgt
+            GROUP BY child.id
+            HAVING COUNT(parent.id) - 1 = :maxLevel
+            ORDER BY child.lft', ['maxLevel' => $maxLevel]
+        );
         return collect($categories);
     }
 
@@ -47,12 +67,16 @@ class CategoryService extends ImageHandlerService
             $this->doIncrementLftAndRgt($before, 2);
 
             /* Inserting a new category into the vacated space */
-            return Category::create([
+            $category = Category::create([
                 'title' => $data['title'],
                 'lft' => $before + 1,
                 'rgt' => $before + 2,
-                'image' => $data['image'] ?? null,
+                'image' => $data['image'],
             ]);
+
+            $this->processAttributesSaving($category);
+
+            return $category;
         });
     }
 
@@ -65,15 +89,16 @@ class CategoryService extends ImageHandlerService
             'image' => $data['image'],
         ]);
 
-        if ($category->parentCategoryId() == $data['parent_category']
-            && $category->previousCategoryId() == $data['previous_category']) {
+        $isTheParentCategoryNew = $category->parentCategoryId() != $data['parent_category'];
+
+        if (!$isTheParentCategoryNew && $category->previousCategoryId() == $data['previous_category']) {
             return;
         }
 
         /* The value after which we insert the category */
         $before = $this->findTheValueBeforeInserting($data);
 
-        DB::transaction(function () use ($before, $category, $data) {
+        DB::transaction(function () use ($before, $category, $data, $isTheParentCategoryNew) {
             $width = $category->rgt - $category->lft + 1;
 
             /* Moving all lft and rgt to the right of the value (freeing up space for inserting the category) */
@@ -91,16 +116,27 @@ class CategoryService extends ImageHandlerService
             /* Reducing all lft and rgt values to the right of the previous category placement */
             /* (compensating for moving the category) */
             $this->doDecrementLftAndRgt($right, $width);
+
+            if ($isTheParentCategoryNew) {
+                $this->processAttributesUpdating($category);
+            }
         });
     }
 
-    public function changeAttributes(Category $category, array $data): void
+    public function changeAttributes(Category $category, ?array $attributesIds): void
     {
-        DB::transaction(function () use ($category, $data) {
-            $category->attributes()->sync($data['attributes_ids']);
+        DB::transaction(function () use ($category, $attributesIds) {
+
+            $category->attributes()->sync($attributesIds);
+            foreach ($category->products as $product) {
+                $product->attributes()->sync($attributesIds);
+            }
 
             foreach ($category->childCategories() as $childCategory) {
-                $childCategory->attributes()->syncWithoutDetaching($data['attributes_ids']);
+                $childCategory->attributes()->syncWithoutDetaching($attributesIds);
+                foreach ($childCategory->products as $product) {
+                    $product->attributes()->syncWithoutDetaching($attributesIds);
+                }
             }
         });
     }
@@ -115,6 +151,7 @@ class CategoryService extends ImageHandlerService
             $left = $category->lft;
             $right = $category->rgt;
 
+            $category->attributes()->detach();
             $category->delete();
 
             /* Reducing lft and rgt in child categories */
@@ -126,18 +163,26 @@ class CategoryService extends ImageHandlerService
 
             /* Reducing lft and rgt of the categories on the right */
             $this->doDecrementLftAndRgt($right, 2);
+
+
         });
     }
 
-    public function getPathToSave(): string
+    public static function getPathToSave(): string
     {
         return config('images.category.path_to_save');
     }
 
-    public function getImgParams(): array
+    public static function getPathToDefault(): string
+    {
+        return config('images.category.default');
+    }
+
+    public static function getImgParams(): array
     {
         return config('images.category');
     }
+
 
     /**
      * The value after which we insert the category.
@@ -158,9 +203,10 @@ class CategoryService extends ImageHandlerService
 
     private function processImageSaving(array $data): array
     {
-        if (!empty($data['image'])) {
-            $data['image'] = $this->saveToDisk($data['image']);
-        }
+        !empty($data['image'])
+            ? $data['image'] = $this->saveToDisk($data['image'])
+            : $data['image'] = null;
+
         return $data;
     }
 
@@ -183,7 +229,7 @@ class CategoryService extends ImageHandlerService
     }
 
     /**
-     * Increment all lft and rgt
+     * Increment all lft and rgt that are larger than the value
      */
     private function doIncrementLftAndRgt(int $since, int $size): void
     {
@@ -195,7 +241,7 @@ class CategoryService extends ImageHandlerService
     }
 
     /**
-     * Decrement all lft and rgt
+     * Decrement all lft and rgt that are larger than the value
      */
     private function doDecrementLftAndRgt(int $since, int $size): void
     {
@@ -204,5 +250,26 @@ class CategoryService extends ImageHandlerService
 
         Category::where('rgt', '>', $since)
             ->decrement('rgt', $size);
+    }
+
+    private function processAttributesSaving(Category $category): void
+    {
+        $attributesIds = $category->attributesIdsOfTheParentCategory();
+        $category->attributes()->attach($attributesIds);
+    }
+
+    /**
+     * Adding relations to the attributes of the new parent category
+     * (existing relations remain)
+     */
+    private function processAttributesUpdating(Category $category): void
+    {
+        $category->refresh();
+        $attributesIds = $category->attributesIdsOfTheParentCategory();
+        $category->attributes()->syncWithoutDetaching($attributesIds);
+
+        foreach ($category->childCategories() as $childCategory) {
+            $childCategory->attributes()->syncWithoutDetaching($attributesIds);
+        }
     }
 }

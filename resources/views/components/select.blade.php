@@ -1,23 +1,16 @@
-@props(['name', 'selected' => false, 'disabled' => false, 'label' => false, 'values'])
+@props(['name', 'label' => false, 'messages' => null])
 
 <div class="form-group">
     @if($label)
         <label for="{{ $name }}" class="mb-1">{{ $label }}</label>
     @endif
 
-    <select class="custom-select" name="{{ $name }}" id="{{ $name }}">
-        @if($disabled)
-            <option disabled selected>{{ $disabled }}</option>
-        @endif
-
-        @foreach($values as $value)
-            @if($value == $selected)
-                <option value="{{ $value }}" selected>{{ $value }}</option>
-            @else
-                <option value="{{ $value }}" @selected(old($name) == $value)>{{ $value }}</option>
-            @endif
-        @endforeach
+    <select name="{{ $name }}"
+            class="custom-select {{ !empty($messages) ? 'is-invalid' : '' }}"
+            id="{{ $name }}">
+        {{ $slot }}
     </select>
+    <x-input-error :messages="$messages"/>
 </div>
 
 

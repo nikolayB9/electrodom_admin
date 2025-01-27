@@ -3,8 +3,8 @@
 namespace App\Http\Requests\Auth;
 
 use App\Enums\GenderEnum;
+use App\Services\ProfileService;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 
@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest
      */
     public function rules(): array
     {
-        $imgParams = config('images.user');
+        $imgParams = ProfileService::getImgParams();
 
         return [
             'name' => ['required', 'string', 'max:255'],

@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Validation;
+namespace App\Validation\Category;
 
-use App\Services\CategoryService;
 use Illuminate\Validation\Validator;
 
 class CheckingAttributesOfTheParentCategory
@@ -10,9 +9,9 @@ class CheckingAttributesOfTheParentCategory
     public function __invoke(Validator $validator): void
     {
         $validated = $validator->validated();
-        $parentAttributeIds = request()->category->attributesIdsOfTheParentCategory();
+        $parentAttributesIds = request()->category->attributesIdsOfTheParentCategory();
 
-        foreach ($parentAttributeIds as $attributeId) {
+        foreach ($parentAttributesIds as $attributeId) {
             if (!in_array((string)$attributeId, $validated['attributes_ids'])) {
                 $validator->errors()->add(
                     'attributes_ids',

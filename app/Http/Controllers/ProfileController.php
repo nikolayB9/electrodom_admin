@@ -13,6 +13,10 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    public function __construct(public ProfileService $profileService)
+    {
+    }
+
     public function show(Request $request): View
     {
         return view('profile.show', [
@@ -27,7 +31,7 @@ class ProfileController extends Controller
     {
         return view('profile.edit', [
             'user' => $request->user(),
-            'userImageUrl' => $request->user()->getImageUrl(),
+            'imgParams' => $this->profileService::getImgParams(),
             'genders' => GenderEnum::getValues(),
         ]);
     }
@@ -35,9 +39,9 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request, ProfileService $service): RedirectResponse
+    public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $data = $service->processImageUpdating($request->user(), $request->validated());
+        $data = $this->profileService->processImageUpdating($request->user(), $request->validated());
 
         $request->user()->fill($data);
 
@@ -53,13 +57,13 @@ class ProfileController extends Controller
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request, ProfileService $service): RedirectResponse
+    public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
         ]);
 
-        $service->deleteImage($request->user());
+        $this->profileService->deleteImage($request->user());
 
         Auth::logout();
 
