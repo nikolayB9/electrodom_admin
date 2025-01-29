@@ -161,7 +161,7 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form action="{{ route('products.update.attributes', $product->id) }}" method="post">
+                        <form action="{{ route('products.update_attributes', $product->id) }}" method="post">
                             @csrf
                             @method('patch')
                             <div class="card-body pb-0 login-card-body">

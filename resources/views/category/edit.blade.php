@@ -153,7 +153,7 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form action="{{ route('categories.update.attributes', $category->id) }}" method="post">
+                        <form action="{{ route('categories.update_attributes', $category->id) }}" method="post">
                             @csrf
                             @method('patch')
                             <div class="card-body pb-0 login-card-body">

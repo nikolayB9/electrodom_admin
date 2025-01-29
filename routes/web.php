@@ -14,7 +14,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::resource('categories', \App\Http\Controllers\CategoryController::class)
         ->except('show');
     Route::patch('categories/{category}/update-attributes', [\App\Http\Controllers\CategoryController::class, 'updateAttributes'])
-        ->name('categories.update.attributes');
+        ->name('categories.update_attributes');
 
     Route::resource('attributes', \App\Http\Controllers\AttributeController::class)
         ->except(['show', 'create', 'edit']);
@@ -25,7 +25,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::resource('products', \App\Http\Controllers\ProductController::class)
         ->except('show');
     Route::patch('products/{product}/update-attributes', [\App\Http\Controllers\ProductController::class, 'updateAttributes'])
-        ->name('products.update.attributes');
+        ->name('products.update_attributes');
 });
 
 require __DIR__ . '/auth.php';
