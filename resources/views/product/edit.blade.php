@@ -170,7 +170,7 @@
                                         <label for="attribute{{ $attribute->id }}"
                                                class="mb-1 font-weight-normal"
                                                style="color: #000;">
-                                            {{ $attribute->fullTitle }}
+                                            {{ $attribute->title }}
                                         </label>
                                         <input type="text"
                                                class="form-control {{ !empty($errors->updatePassword->get("attributes_ids[$attribute->id]")) ? 'is-invalid' : '' }}"

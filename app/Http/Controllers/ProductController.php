@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Product\StoreRequest;
 use App\Http\Requests\Product\UpdateAttributesRequest;
 use App\Http\Requests\Product\UpdateRequest;
+use App\Models\AttributeProduct;
 use App\Models\Category;
 use App\Models\Product;
 use App\Services\CategoryService;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -41,7 +43,7 @@ class ProductController extends Controller
         return view('product.edit', [
             'product' => $product,
             'categories' => $categoryService->getLastNestingLevelCategories(),
-            'attributes' =>  $this->productService->getAttributesWithUnitTitle($product->id),
+            'attributes' => $this->productService->getAttributesWithUnitTitle($product->id),
             'imgParams' => $this->productService::getImgParams(),
         ]);
     }

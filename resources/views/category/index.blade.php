@@ -33,6 +33,7 @@
                                     <a type="button"
                                        href="{{ route('categories.edit', $category->id) }}"
                                        class="btn btn-default">
+                                        {{ $category->id }}.
                                         {{ $category->title }}
                                     </a>
                                     <button type="button" class="btn btn-default dropdown-toggle dropdown-icon"

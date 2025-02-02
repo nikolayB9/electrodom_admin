@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Product;
+namespace App\Http\Resources\Category;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductAttributeResource extends JsonResource
+class CategoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,8 @@ class ProductAttributeResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => !empty($this->measureUnit)
-                ? $this->title . ', ' . $this->measureUnit->title
-                : $this->title,
-            'value' => $this->pivot->value,
+            'title' => $this->title,
+            'image' => $this->getImageUrl(),
         ];
     }
 }

@@ -24,12 +24,23 @@ class Category extends Model
 
     public function hasProductsOrAChildCategoryHasProducts(): bool
     {
-        $categoriesIds = Category::where('lft', '>=', $this->lft)
-            ->where('rgt', '<=', $this->rgt)
-            ->pluck('id')
-            ->toArray();
-
+        $categoriesIds = $this->getIdsIncludingChildCategories();
         return (bool)Product::whereIn('category_id', $categoriesIds)->select('id')->first();
+    }
+
+    public function getMinAndMaxPrices(): array
+    {
+        $categoriesIds = $this->getIdsIncludingChildCategories();
+
+        $minPrice = Product::whereIn('category_id', $categoriesIds)
+            ->min('price');
+        $maxPrice = Product::whereIn('category_id', $categoriesIds)
+            ->max('price');
+
+        return [
+            'min' => floor($minPrice),
+            'max' => ceil($maxPrice),
+        ];
     }
 
     public function hasImage(): bool
@@ -66,19 +77,33 @@ class Category extends Model
             ->get();
     }
 
-    /**
-     * Get all category attributes with measure units in titles as fullTitle.
-     */
-    public function attributesWithUnitTitle(): \Illuminate\Support\Collection
+    public function getIdsIncludingChildCategories(): array
     {
-        $attributes = DB::select(
-            'SELECT a.id, CONCAT_WS(", ", a.title, m_u.title) AS fullTitle
-            FROM attributes AS a LEFT JOIN measure_units AS m_u ON a.measure_unit_id = m_u.id
-            WHERE a.id IN (SELECT a_c.attribute_id FROM attribute_category AS a_c WHERE category_id = :id)
-            ORDER BY a.title', ['id' => $this->id]
-        );
+        return Category::where('lft', '>=', $this->lft)
+            ->where('rgt', '<=', $this->rgt)
+            ->pluck('id')
+            ->toArray();
+    }
 
-        return collect($attributes);
+    /**
+     * Get all category attributes with measure units in titles
+     * and all product values.
+     */
+    public function attributesWithUnitTitleAndValues(): array
+    {
+        $categoriesIds = implode(', ', $this->getIdsIncludingChildCategories());
+
+        $attributes = DB::select(
+            "SELECT a.id, CONCAT_WS(', ', a.title, m_u.title) AS title, GROUP_CONCAT(DISTINCT a_p.value)
+                                                 AS product_values
+                FROM attributes AS a LEFT JOIN measure_units AS m_u ON a.measure_unit_id = m_u.id
+                LEFT JOIN attribute_product AS a_p ON a_p.attribute_id = a.id
+                AND a_p.product_id IN (SELECT p.id FROM products AS p WHERE p.category_id IN ($categoriesIds))
+                WHERE a.id IN (SELECT a_c.attribute_id FROM attribute_category AS a_c WHERE category_id = :id)
+                GROUP BY a.id
+                ORDER BY title", ['id' => $this->id]
+        );
+        return $this->convertAStringOfValuesToAnArray($attributes);
     }
 
     public function attributesIds(): array
@@ -99,5 +124,18 @@ class Category extends Model
         return $parentCategory
             ? $parentCategory->attributesIds()
             : [];
+    }
+
+    private function convertAStringOfValuesToAnArray(array $attributes): array
+    {
+        foreach ($attributes as $attribute) {
+            if (!empty($attribute->product_values)) {
+                $attribute->values = explode(',', $attribute->product_values);
+            } else {
+                $attribute->values = null;
+            }
+            unset($attribute->product_values);
+        }
+        return $attributes;
     }
 }
