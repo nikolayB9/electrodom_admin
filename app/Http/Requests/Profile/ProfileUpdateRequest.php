@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Profile;
 
-use App\Enums\GenderEnum;
+use App\Enums\User\GenderEnum;
 use App\Models\User;
 use App\Services\ProfileService;
 use Illuminate\Foundation\Http\FormRequest;

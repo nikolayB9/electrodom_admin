@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Enums\GenderEnum;
-use App\Enums\RoleEnum;
+use App\Enums\User\GenderEnum;
+use App\Enums\User\RoleEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;

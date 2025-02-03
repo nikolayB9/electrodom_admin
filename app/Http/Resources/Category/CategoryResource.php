@@ -18,6 +18,8 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'image' => $this->getImageUrl(),
+            'subcategories' => MinifiedCategoryResource::collection($this->directSubCategories()),
+            'parentCategories' => MinifiedCategoryResource::collection($this->parentCategories()),
         ];
     }
 }

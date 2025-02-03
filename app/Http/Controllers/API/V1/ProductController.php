@@ -7,7 +7,6 @@ use App\Http\Filters\ProductFilter;
 use App\Http\Requests\API\V1\Product\IndexRequest;
 use App\Http\Resources\Product\IndexProductResource;
 use App\Http\Resources\Product\ProductResource;
-use App\Models\Category;
 use App\Models\Product;
 use App\Services\API\V1\ProductService;
 
@@ -22,7 +21,8 @@ class ProductController extends Controller
         $data = $this->productService->processTheDataForFiltering($request->validated());
 
         $filter = app()->make(ProductFilter::class, ['queryParams' => array_filter($data)]);
-        $products = Product::filter($filter)->get();
+        $products = Product::filter($filter)->paginate($data['showBy'], ['*'], 'page', $data['page']);
+
         return IndexProductResource::collection($products);
     }
 

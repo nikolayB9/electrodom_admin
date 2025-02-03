@@ -73,7 +73,33 @@ class Category extends Model
     {
         return Category::where('lft', '>', $this->lft)
             ->where('rgt', '<', $this->rgt)
-            ->select('id')
+            ->select('id', 'title')
+            ->get();
+    }
+
+    public function directSubCategories(): \Illuminate\Support\Collection
+    {
+        $categories = DB::select(
+            'SELECT child.id, child.title
+            FROM categories AS child,
+                 categories AS parent
+            WHERE child.lft > :lft AND child.rgt < :rgt AND child.lft BETWEEN parent.lft AND parent.rgt
+            GROUP BY child.id
+            HAVING COUNT(parent.id) - 1 = (SELECT COUNT(parent.id)
+                        FROM categories AS parent, categories as child
+                        WHERE child.lft BETWEEN parent.lft AND parent.rgt
+                        AND child.id = :id)
+            ORDER BY child.lft', ['lft' => $this->lft, 'rgt' => $this->rgt, 'id' => $this->id]
+        );
+        return collect($categories);
+    }
+
+    public function parentCategories()
+    {
+        return Category::where('lft', '<', $this->lft)
+            ->where('rgt', '>', $this->rgt)
+            ->select('id', 'title')
+            ->orderBy('lft', 'asc')
             ->get();
     }
 

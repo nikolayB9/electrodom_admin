@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Enums\GenderEnum;
+use App\Enums\User\GenderEnum;
 use App\Services\ProfileService;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;

@@ -437,6 +437,16 @@ class DatabaseSeeder extends Seeder
         Attribute::insert($attributes);
         AttributeCategory::insert($attributeCategory);
         Product::insert($products);
+        Product::insert($products);
+        Product::insert($products);
+        Product::insert($products);
+        Product::insert($products);
+        Product::insert($products);
+        Product::insert($products);
+        Product::insert($products);
+        Product::insert($products);
+        Product::insert($products);
+        Product::insert($products);
         AttributeProduct::insert($attributeProduct);
 
 //        User::factory()->create([

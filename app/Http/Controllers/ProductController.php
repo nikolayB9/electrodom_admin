@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Product\OrderByEnum;
 use App\Http\Requests\Product\StoreRequest;
 use App\Http\Requests\Product\UpdateAttributesRequest;
 use App\Http\Requests\Product\UpdateRequest;

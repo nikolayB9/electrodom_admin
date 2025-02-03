@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Enums\Product\OrderByEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Category\CategoryResource;
 use App\Http\Resources\Category\IndexCategoryResource;
@@ -29,6 +30,7 @@ class CategoryController extends Controller
         return response()->json([
             'attributes' => $category->attributesWithUnitTitleAndValues(),
             'prices' => $category->getMinAndMaxPrices(),
+            'orderBy' => OrderByEnum::cases(),
         ]);
     }
 }

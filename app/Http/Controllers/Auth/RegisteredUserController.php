@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Enums\GenderEnum;
-use App\Enums\RoleEnum;
+use App\Enums\User\GenderEnum;
+use App\Enums\User\RoleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Models\UserImage;
-use App\Models\User;
 use App\Services\ProfileService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller

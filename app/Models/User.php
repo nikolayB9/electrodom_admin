@@ -3,8 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Enums\GenderEnum;
-use App\Enums\RoleEnum;
+use App\Enums\User\GenderEnum;
+use App\Enums\User\RoleEnum;
 use App\Services\ProfileService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;

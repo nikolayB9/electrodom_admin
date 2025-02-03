@@ -2,6 +2,7 @@
 
 namespace App\Http\Filters;
 
+use App\Enums\Product\OrderByEnum;
 use Illuminate\Database\Eloquent\Builder;
 
 class ProductFilter extends AbstractFilter
@@ -43,7 +44,6 @@ class ProductFilter extends AbstractFilter
                     ->whereIn('value', $values);
             });
         }
-
     }
 
     protected function priceMin(Builder $builder, $value)
@@ -59,18 +59,18 @@ class ProductFilter extends AbstractFilter
     protected function orderBy(Builder $builder, $value)
     {
         switch ($value) {
-            case 'default':
+            case OrderByEnum::BY_DEFAULT->value:
                 break;
-            case 'name_a_z':
-                $builder->orderBy('title', 'asc');
+            case OrderByEnum::NAME_A_Z->value:
+                $builder->orderBy('title');
                 break;
-            case 'name_z_a':
+            case OrderByEnum::NAME_Z_A->value:
                 $builder->orderBy('title', 'desc');
                 break;
-            case 'price_l_h':
-                $builder->orderBy('price', 'asc');
+            case OrderByEnum::PRICE_L_H->value:
+                $builder->orderBy('price');
                 break;
-            case 'price_h_l':
+            case OrderByEnum::PRICE_H_L->value:
                 $builder->orderBy('price', 'desc');
                 break;
         }
