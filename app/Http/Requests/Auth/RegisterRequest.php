@@ -26,7 +26,6 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         $imgParams = ProfileService::getImgParams();
-
         return [
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['nullable', 'string', 'max:255'],
@@ -35,7 +34,7 @@ class RegisterRequest extends FormRequest
             'phone_number' => [
                 'nullable',
                 'string',
-                'regex:/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/',
+                'regex:/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7}$/',
                 'unique:users,phone_number',
             ],
             'gender' => ['nullable', 'string', Rule::enum(GenderEnum::class)],

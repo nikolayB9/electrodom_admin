@@ -54,9 +54,7 @@
                                                     label="Моб.телефон"
                                                     placeholder="Введите моб.телефон"
                                                     :messages="$errors->get('phone_number')"
-                                                    data-inputmask="&quot;mask&quot;: &quot;9(999)999-9999&quot;"
-                                                    data-mask=""
-                                                    inputmode="text"/>
+                                                    />
 
                                 <x-select name="gender" label="Пол">
                                     @foreach($genders as $gender)

@@ -7,6 +7,9 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::get('/users/get-genders', [\App\Http\Controllers\API\V1\UserController::class, 'getGenders']);
+Route::post('/users/register', [\App\Http\Controllers\API\V1\UserController::class, 'register']);
+
 Route::get('/categories', [\App\Http\Controllers\API\V1\CategoryController::class, 'index']);
 Route::get('/categories/{category}', [\App\Http\Controllers\API\V1\CategoryController::class, 'show']);
 Route::get('/categories/{category}/get-filters', [\App\Http\Controllers\API\V1\CategoryController::class, 'getFilters']);
