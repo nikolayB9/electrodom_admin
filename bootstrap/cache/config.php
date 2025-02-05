@@ -9,7 +9,7 @@
     'env' => 'local',
     'debug' => true,
     'url' => 'http://localhost:8000',
-    'frontend_url' => 'http://localhost:3000',
+    'frontend_url' => 'http://localhost:5173',
     'asset_url' => NULL,
     'timezone' => 'UTC',
     'locale' => 'en',
@@ -220,7 +220,6 @@
     array (
       0 => 'api/*',
       1 => 'sanctum/csrf-cookie',
-      2 => '/login',
     ),
     'allowed_methods' => 
     array (
@@ -228,7 +227,7 @@
     ),
     'allowed_origins' => 
     array (
-      0 => '*',
+      0 => 'http://localhost:5173',
     ),
     'allowed_origins_patterns' => 
     array (
@@ -671,7 +670,7 @@
   array (
     'stateful' => 
     array (
-      0 => 'http://localhost:5173',
+      0 => 'localhost:5173',
     ),
     'guard' => 
     array (

@@ -9,6 +9,7 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/users/get-genders', [\App\Http\Controllers\API\V1\UserController::class, 'getGenders']);
 Route::post('/users/register', [\App\Http\Controllers\API\V1\UserController::class, 'register']);
+Route::post('/users/login', [\App\Http\Controllers\API\V1\UserController::class, 'login']);
 
 Route::get('/categories', [\App\Http\Controllers\API\V1\CategoryController::class, 'index']);
 Route::get('/categories/{category}', [\App\Http\Controllers\API\V1\CategoryController::class, 'show']);
