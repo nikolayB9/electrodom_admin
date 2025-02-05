@@ -45,7 +45,9 @@
                     <x-select name="gender">
                         <option disabled selected>Выберите пол</option>
                         @foreach($genders as $gender)
-                            <option @selected(old('gender') == $gender)>{{ $gender }}</option>
+                            <option @selected(old('gender') == $gender) value="{{ $gender }}">
+                                {{ $gender }}
+                            </option>
                         @endforeach
                     </x-select>
 

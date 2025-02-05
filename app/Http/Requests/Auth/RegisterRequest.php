@@ -35,10 +35,10 @@ class RegisterRequest extends FormRequest
             'phone_number' => [
                 'nullable',
                 'string',
-                'regex:/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/',
+                'regex:/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7}$/',
                 'unique:users,phone_number',
             ],
-            'gender' => ['nullable', 'string', Rule::enum(GenderEnum::class)],
+            'gender' => ['sometimes', 'string', Rule::enum(GenderEnum::class)],
             'image' => [
                 'nullable',
                 'image',

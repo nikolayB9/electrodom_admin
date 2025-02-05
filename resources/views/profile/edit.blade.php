@@ -61,7 +61,8 @@
                                 <x-select name="gender" label="Пол">
                                     @foreach($genders as $gender)
                                         <option @selected($user->getGender() == $gender)
-                                            @selected(old('gender') == $gender)>
+                                                @selected(old('gender') == $gender)
+                                                value="{{ $gender }}">
                                             {{ $gender }}
                                         </option>
                                     @endforeach

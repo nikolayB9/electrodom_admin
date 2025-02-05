@@ -4,9 +4,9 @@ namespace App\Enums\User;
 
 enum GenderEnum: string
 {
+    case Unspecified = 'не указан';
     case Male = 'мужской';
     case Female = 'женский';
-    case Unspecified = 'не указан';
 
     public static function getValues(): array
     {
