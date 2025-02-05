@@ -26,7 +26,6 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         $imgParams = ProfileService::getImgParams();
-
         return [
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['nullable', 'string', 'max:255'],

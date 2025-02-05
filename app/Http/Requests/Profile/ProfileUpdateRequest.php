@@ -34,7 +34,7 @@ class ProfileUpdateRequest extends FormRequest
             'phone_number' => [
                 'nullable',
                 'string',
-                'regex:/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/',
+                'regex:/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7}$/',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
             'gender' => ['required', 'string', Rule::enum(GenderEnum::class)],
