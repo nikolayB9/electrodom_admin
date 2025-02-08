@@ -17,17 +17,23 @@
                     <div class="card">
                         <div class="card-header">
 
+                            <form action="{{ route('users.index') }}" method="get">
+                                <div class="input-group input-group-sm float-right" style="width: 400px; height: 46px;">
+                                    <input style=height:46px;"
+                                           type="text"
+                                           name="nameOrEmail"
+                                           value="{{ request()->get('nameOrEmail') }}"
+                                           class="form-control float-right"
+                                           placeholder="Поиск по имени или по email">
 
-                            <div class="input-group input-group-sm float-right" style="width: 400px; height: 46px;">
-                                <input style=height:46px;" type="text" name="table_search" class="form-control float-right"
-                                       placeholder="Поиск по email или по имени">
-
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default">
-                                        <i class="fas fa-search"></i>
-                                    </button>
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
+
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -78,7 +84,8 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title">Удалить пользователя
-                                                        "{{ $user->getFullName() . '; id = ' . $user->id . '; email = ' . $user->email }}" ?
+                                                        "{{ $user->getFullName() . '; id = ' . $user->id . '; email = ' . $user->email }}
+                                                        " ?
                                                     </h5>
                                                 </div>
 
@@ -87,7 +94,8 @@
                                                     @csrf
                                                     @method('delete')
                                                     <div class="modal-footer justify-content-end">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        <button type="button" class="btn btn-default"
+                                                                data-dismiss="modal">
                                                             Отмена
                                                         </button>
                                                         <button type="submit" class="btn btn-danger">Удалить</button>
