@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Profile;
+namespace App\Http\Requests\User;
 
 use App\Enums\User\GenderEnum;
 use App\Models\User;
-use App\Services\ProfileService;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class ProfileUpdateRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -17,9 +16,6 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        dd($this->route('user'));
-        $imgParams = ProfileService::getImgParams();
-
         return [
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['nullable', 'string', 'max:255'],
@@ -30,24 +26,15 @@ class ProfileUpdateRequest extends FormRequest
                 'lowercase',
                 'email',
                 'max:255',
-                Rule::unique(User::class)->ignore($this->user()->id),
+                Rule::unique(User::class)->ignore($this->route('user')),
             ],
             'phone_number' => [
                 'nullable',
                 'string',
                 'regex:/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7}$/',
-                Rule::unique(User::class)->ignore($this->user()->id),
+                Rule::unique(User::class)->ignore($this->route('user')),
             ],
             'gender' => ['required', 'string', Rule::enum(GenderEnum::class)],
-            'image' => [
-                'nullable',
-                'image',
-                "extensions:{$imgParams['extensions']}",
-                "mimes:{$imgParams['mimes']}",
-                "max:{$imgParams['maximum_size']}",
-                "dimensions:width={$imgParams['width']},height={$imgParams['height']}",
-            ],
-            'delete_image' => ['nullable', 'string'],
         ];
     }
 }

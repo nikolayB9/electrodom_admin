@@ -11,6 +11,9 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::resource('users', \App\Http\Controllers\UserController::class)
+        ->except('create', 'store', 'show');
+
     Route::resource('categories', \App\Http\Controllers\CategoryController::class)
         ->except('show');
     Route::patch('categories/{category}/update-attributes', [\App\Http\Controllers\CategoryController::class, 'updateAttributes'])
