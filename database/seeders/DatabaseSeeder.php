@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\User\GenderEnum;
+use App\Enums\User\RoleEnum;
 use App\Models\Attribute;
 use App\Models\AttributeCategory;
 use App\Models\AttributeProduct;
@@ -11,6 +13,8 @@ use App\Models\Product;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,9 +23,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(1)->create();
 
-        $categories = [
+
+        $admin = [
+            'name' => 'Ivan',
+            'surname' => 'Ivanov',
+            'patronymic' => 'Ivanovich',
+            'gender' => GenderEnum::Male,
+            'role' => RoleEnum::Admin,
+            'email' => 'user@mail.ru',
+            'email_verified_at' => now(),
+            'password' => Hash::make('123123123'),
+            'remember_token' => Str::random(10),
+        ];
+         $categories = [
             [
                 'title' => 'Электрооборудование',
                 'lft' => 1,
@@ -432,26 +447,14 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
+        User::insert($admin);
         Category::insert($categories);
         MeasureUnit::insert($measureUnits);
         Attribute::insert($attributes);
         AttributeCategory::insert($attributeCategory);
         Product::insert($products);
-        Product::insert($products);
-        Product::insert($products);
-        Product::insert($products);
-        Product::insert($products);
-        Product::insert($products);
-        Product::insert($products);
-        Product::insert($products);
-        Product::insert($products);
-        Product::insert($products);
-        Product::insert($products);
         AttributeProduct::insert($attributeProduct);
 
-//        User::factory()->create([
-//            'name' => 'Test User',
-//            'email' => 'test@example.com',
-//        ]);
+        User::factory(100)->create();
     }
 }

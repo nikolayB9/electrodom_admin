@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\User\GenderEnum;
-use App\Http\Filters\ProductFilter;
 use App\Http\Filters\UserFilter;
 use App\Http\Requests\User\IndexRequest;
 use App\Http\Requests\User\UpdateRequest;
-use App\Models\Product;
 use App\Models\User;
 use App\Services\ProfileService;
 use Illuminate\Http\RedirectResponse;
@@ -19,10 +17,10 @@ class UserController extends Controller
     public function index(IndexRequest $request)
     {
         $filter = app()->make(UserFilter::class, ['queryParams' => array_filter($request->validated())]);
-        $users = User::filter($filter)->get();
+        $users = User::filter($filter)->where('id', '!=', auth()->user()->id)->paginate(15);
 
         return view('user.index', [
-           'users' => $users->except([auth()->user()->id]),
+           'users' => $users,
         ]);
     }
 

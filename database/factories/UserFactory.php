@@ -26,16 +26,13 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-//            'name' => fake()->name(),
-            'name' => 'Ivan',
-            'surname' => 'Ivanov',
-            'patronymic' => 'Ivanovich',
-            'gender' => GenderEnum::Male,
-            'role' => RoleEnum::Admin,
-//            'email' => fake()->unique()->safeEmail(),
-            'email' => 'user@mail.ru',
+            'name' => fake()->name(),
+            'surname' => fake()->lastName,
+            'patronymic' => '',
+            'email' => fake()->unique()->safeEmail(),
+            'gender' => fake()->randomElement(GenderEnum::class),
+            'role' => RoleEnum::User,
             'email_verified_at' => now(),
-//            'password' => static::$password ??= Hash::make('123123123'),
             'password' => Hash::make('123123123'),
             'remember_token' => Str::random(10),
         ];
