@@ -41,7 +41,9 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Email</th>
+                                    <th>
+                                        Email
+                                    </th>
                                     <th>Имя</th>
                                     <th>Роль</th>
                                     <th>Действия</th>

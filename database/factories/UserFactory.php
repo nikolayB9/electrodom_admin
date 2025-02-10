@@ -6,7 +6,6 @@ use App\Enums\User\GenderEnum;
 use App\Enums\User\RoleEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -26,15 +25,14 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'surname' => fake()->lastName,
-            'patronymic' => '',
+            'name' => fake()->firstName(),
+            'surname' => fake()->randomElement([null, fake()->lastName]),
+            'patronymic' => fake()->randomElement([null, ucfirst(fake()->word)]),
             'email' => fake()->unique()->safeEmail(),
             'gender' => fake()->randomElement(GenderEnum::class),
             'role' => RoleEnum::User,
             'email_verified_at' => now(),
             'password' => Hash::make('123123123'),
-            'remember_token' => Str::random(10),
         ];
     }
 
