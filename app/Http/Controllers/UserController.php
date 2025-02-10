@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\User\GenderEnum;
+use App\Enums\User\OrderByEnum;
 use App\Http\Filters\UserFilter;
 use App\Http\Requests\User\IndexRequest;
 use App\Http\Requests\User\UpdateRequest;
@@ -20,7 +21,7 @@ class UserController extends Controller
         $users = User::filter($filter)->where('id', '!=', auth()->user()->id)->paginate(15);
 
         return view('user.index', [
-           'users' => $users,
+            'users' => $users,
         ]);
     }
 

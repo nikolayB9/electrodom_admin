@@ -19,12 +19,12 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $admin = [
-            'name' => 'Иван',
-            'surname' => 'Иванов',
-            'patronymic' => 'Иванович',
+            'name' => 'Админ',
+            'surname' => 'Админов',
+            'patronymic' => 'Админович',
             'gender' => GenderEnum::Male,
             'role' => RoleEnum::Admin,
-            'email' => 'user@mail.ru',
+            'email' => 'admin@mail.ru',
             'email_verified_at' => now(),
             'password' => Hash::make('123123123'),
         ];

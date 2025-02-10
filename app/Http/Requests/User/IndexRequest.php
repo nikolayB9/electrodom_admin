@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\User;
 
+use App\Enums\User\OrderByEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class IndexRequest extends FormRequest
 {
@@ -15,6 +17,9 @@ class IndexRequest extends FormRequest
     {
         return [
             'nameOrEmail' => ['nullable', 'string', 'max:255'],
+            'orderBy' => ['nullable'],
         ];
     }
+
+
 }

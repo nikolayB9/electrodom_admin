@@ -32,7 +32,7 @@
                                         </button>
                                     </div>
                                 </div>
-                            </form>
+                            </form><!-- /.search by name or email -->
 
                         </div>
                         <!-- /.card-header -->
@@ -40,12 +40,84 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th>ID</th>
                                     <th>
-                                        Email
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default"><span
+                                                    class="text-bold">ID</span></button>
+                                            <button type="button" class="btn btn-default dropdown-toggle dropdown-icon"
+                                                    data-toggle="dropdown">
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <form action="{{ route('users.index') }}" method="get">
+                                                    <input name="orderBy"
+                                                           value="{{ \App\Enums\User\OrderByEnum::ID_ASC->value }}"
+                                                           type="hidden">
+                                                    <button type="submit"
+                                                            class="dropdown-item">{{ \App\Enums\User\OrderByEnum::ID_ASC->value }}</button>
+                                                </form>
+                                                <form action="{{ route('users.index') }}" method="get">
+                                                    <input name="orderBy"
+                                                           value="{{ \App\Enums\User\OrderByEnum::ID_DESC->value }}"
+                                                           type="hidden">
+                                                    <button type="submit"
+                                                            class="dropdown-item">{{ \App\Enums\User\OrderByEnum::ID_DESC->value }}</button>
+                                                </form>
+                                            </div>
+                                        </div><!-- /.order by ID -->
                                     </th>
-                                    <th>Имя</th>
-                                    <th>Роль</th>
+                                    <th>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default"><span
+                                                    class="text-bold">Email</span></button>
+                                            <button type="button" class="btn btn-default dropdown-toggle dropdown-icon"
+                                                    data-toggle="dropdown">
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <form action="{{ route('users.index') }}" method="get">
+                                                    <input name="orderBy"
+                                                           value="{{ \App\Enums\User\OrderByEnum::EMAIL_A_Z->value }}"
+                                                           type="hidden">
+                                                    <button type="submit"
+                                                            class="dropdown-item">{{ \App\Enums\User\OrderByEnum::EMAIL_A_Z->value }}</button>
+                                                </form>
+                                                <form action="{{ route('users.index') }}" method="get">
+                                                    <input name="orderBy"
+                                                           value="{{ \App\Enums\User\OrderByEnum::EMAIL_Z_A->value }}"
+                                                           type="hidden">
+                                                    <button type="submit"
+                                                            class="dropdown-item">{{ \App\Enums\User\OrderByEnum::EMAIL_Z_A->value }}</button>
+                                                </form>
+                                            </div>
+                                        </div><!-- /.order by Email -->
+                                    </th>
+                                    <th>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default"><span
+                                                    class="text-bold">Имя</span></button>
+                                            <button type="button" class="btn btn-default dropdown-toggle dropdown-icon"
+                                                    data-toggle="dropdown">
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <form action="{{ route('users.index') }}" method="get">
+                                                    <input name="orderBy"
+                                                           value="{{ \App\Enums\User\OrderByEnum::NAME_A_Z->value }}"
+                                                           type="hidden">
+                                                    <button type="submit"
+                                                            class="dropdown-item">{{ \App\Enums\User\OrderByEnum::NAME_A_Z->value }}</button>
+                                                </form>
+                                                <form action="{{ route('users.index') }}" method="get">
+                                                    <input name="orderBy"
+                                                           value="{{ \App\Enums\User\OrderByEnum::NAME_Z_A->value }}"
+                                                           type="hidden">
+                                                    <button type="submit"
+                                                            class="dropdown-item">{{ \App\Enums\User\OrderByEnum::NAME_Z_A->value }}</button>
+                                                </form>
+                                            </div>
+                                        </div><!-- /.order by Name -->
+                                    </th>
                                     <th>Действия</th>
                                 </tr>
                                 </thead>
@@ -65,7 +137,6 @@
                                                 {{ $user->getFullname() }}
                                             </a>
                                         </td>
-                                        <td>{{ $user->role }}</td>
                                         <td>
                                             <a href="{{ route('users.edit', $user->id) }}"
                                                type="button"
