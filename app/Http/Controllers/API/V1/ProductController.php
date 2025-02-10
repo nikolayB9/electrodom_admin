@@ -12,13 +12,9 @@ use App\Services\API\V1\ProductService;
 
 class ProductController extends Controller
 {
-    public function __construct(private ProductService $productService)
+    public function index(IndexRequest $request, \App\Services\ProductService $productService)
     {
-    }
-
-    public function index(IndexRequest $request)
-    {
-        $data = $this->productService->processTheDataForFiltering($request->validated());
+        $data = $productService->processTheDataForFiltering($request->validated());
 
         $filter = app()->make(ProductFilter::class, ['queryParams' => array_filter($data)]);
         $products = Product::filter($filter)->paginate($data['showBy'], ['*'], 'page', $data['page']);

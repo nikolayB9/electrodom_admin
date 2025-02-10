@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Enums\User\GenderEnum;
-use App\Enums\User\OrderByEnum;
 use App\Http\Filters\UserFilter;
 use App\Http\Requests\User\IndexRequest;
 use App\Http\Requests\User\UpdateRequest;

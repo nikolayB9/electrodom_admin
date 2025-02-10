@@ -43,6 +43,10 @@
                                         <td>{{ $user->id }}</td>
                                     </tr>
                                     <tr>
+                                        <td class="text-bold">Роль</td>
+                                        <td>{{ $user->role }}</td>
+                                    </tr>
+                                    <tr>
                                         <td class="text-bold">Имя</td>
                                         <td>
                                             <x-input-with-label name="name"

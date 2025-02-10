@@ -2,33 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Product\OrderByEnum;
+use App\Http\Filters\ProductFilter;
+use App\Http\Requests\Product\IndexRequest;
 use App\Http\Requests\Product\StoreRequest;
 use App\Http\Requests\Product\UpdateAttributesRequest;
 use App\Http\Requests\Product\UpdateRequest;
-use App\Models\AttributeProduct;
-use App\Models\Category;
 use App\Models\Product;
 use App\Services\CategoryService;
 use App\Services\ProductService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    public function __construct(public ProductService $productService)
+    public function __construct(private ProductService  $productService,
+                                private CategoryService $categoryService)
     {
     }
 
-    public function index()
+    public function index(IndexRequest $request,)
     {
-        return view('product.index', ['products' => Product::with('category')->get()]);
+        $data = $this->productService->processTheDataForFiltering($request->validated());
+
+        $filter = app()->make(ProductFilter::class, ['queryParams' => array_filter($data)]);
+        $products = Product::filter($filter)->with('category')->paginate(15);
+
+        return view('product.index', [
+            'products' => $products,
+            'categories' => $this->categoryService->getLastNestingLevelCategories(),
+        ]);
     }
 
-    public function create(CategoryService $categoryService)
+    public function create()
     {
         return view('product.create', [
-            'categories' => $categoryService->getLastNestingLevelCategories(),
+            'categories' => $this->categoryService->getLastNestingLevelCategories(),
             'imgParams' => $this->productService::getImgParams(),
         ]);
     }
@@ -39,11 +45,11 @@ class ProductController extends Controller
         return redirect()->route('products.show', $product->id)->with('status', 'Продукт успешно добавлен.');
     }
 
-    public function edit(Product $product, CategoryService $categoryService)
+    public function edit(Product $product)
     {
         return view('product.edit', [
             'product' => $product,
-            'categories' => $categoryService->getLastNestingLevelCategories(),
+            'categories' => $this->categoryService->getLastNestingLevelCategories(),
             'attributes' => $this->productService->getAttributesWithUnitTitle($product->id),
             'imgParams' => $this->productService::getImgParams(),
         ]);

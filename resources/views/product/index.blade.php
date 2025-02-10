@@ -27,27 +27,128 @@
                     <div class="card">
                         <div class="card-header">
 
+                            <form action="{{ route('products.index') }}" method="get">
+                                <div class="input-group input-group-sm float-right" style="width: 400px; height: 46px;">
+                                    <input style=height:46px;"
+                                           type="text"
+                                           name="title"
+                                           value="{{ request()->get('title') }}"
+                                           class="form-control float-right"
+                                           placeholder="Поиск продукта по названию">
 
-                            <div class="input-group input-group-sm float-right" style="width: 400px; height: 46px;">
-                                <input style=height:46px;" type="text" name="table_search" class="form-control float-right"
-                                       placeholder="Поиск продукта по названию">
-
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default">
-                                        <i class="fas fa-search"></i>
-                                    </button>
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <!-- /.card-header -->
+                            </form><!-- /.search by title -->
+
+                        </div><!-- /.card-header -->
+
                         <div class="card-body">
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Наименование</th>
-                                    <th>Цена</th>
-                                    <th>Категория</th>
+                                    <th>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default"><span
+                                                    class="text-bold">ID</span></button>
+                                            <button type="button" class="btn btn-default dropdown-toggle dropdown-icon"
+                                                    data-toggle="dropdown">
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <form action="{{ route('products.index') }}" method="get">
+                                                    <input name="orderBy"
+                                                           value="{{ \App\Enums\Product\OrderByEnum::ID_ASC->value }}"
+                                                           type="hidden">
+                                                    <button type="submit"
+                                                            class="dropdown-item">{{ \App\Enums\Product\OrderByEnum::ID_ASC->value }}</button>
+                                                </form>
+                                                <form action="{{ route('products.index') }}" method="get">
+                                                    <input name="orderBy"
+                                                           value="{{ \App\Enums\Product\OrderByEnum::ID_DESC->value }}"
+                                                           type="hidden">
+                                                    <button type="submit"
+                                                            class="dropdown-item">{{ \App\Enums\Product\OrderByEnum::ID_DESC->value }}</button>
+                                                </form>
+                                            </div>
+                                        </div><!-- /.order by ID -->
+                                    </th>
+                                    <th>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default"><span
+                                                    class="text-bold">Наименование</span></button>
+                                            <button type="button" class="btn btn-default dropdown-toggle dropdown-icon"
+                                                    data-toggle="dropdown">
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <form action="{{ route('products.index') }}" method="get">
+                                                    <input name="orderBy"
+                                                           value="{{ \App\Enums\Product\OrderByEnum::NAME_A_Z->value }}"
+                                                           type="hidden">
+                                                    <button type="submit"
+                                                            class="dropdown-item">{{ \App\Enums\Product\OrderByEnum::NAME_A_Z->value }}</button>
+                                                </form>
+                                                <form action="{{ route('products.index') }}" method="get">
+                                                    <input name="orderBy"
+                                                           value="{{ \App\Enums\Product\OrderByEnum::NAME_Z_A->value }}"
+                                                           type="hidden">
+                                                    <button type="submit"
+                                                            class="dropdown-item">{{ \App\Enums\Product\OrderByEnum::NAME_Z_A->value }}</button>
+                                                </form>
+                                            </div>
+                                        </div><!-- /.order by Title -->
+                                    </th>
+                                    <th>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default"><span
+                                                    class="text-bold">Цена</span></button>
+                                            <button type="button" class="btn btn-default dropdown-toggle dropdown-icon"
+                                                    data-toggle="dropdown">
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <form action="{{ route('products.index') }}" method="get">
+                                                    <input name="orderBy"
+                                                           value="{{ \App\Enums\Product\OrderByEnum::PRICE_L_H->value }}"
+                                                           type="hidden">
+                                                    <button type="submit"
+                                                            class="dropdown-item">{{ \App\Enums\Product\OrderByEnum::PRICE_L_H->value }}</button>
+                                                </form>
+                                                <form action="{{ route('products.index') }}" method="get">
+                                                    <input name="orderBy"
+                                                           value="{{ \App\Enums\Product\OrderByEnum::PRICE_H_L->value }}"
+                                                           type="hidden">
+                                                    <button type="submit"
+                                                            class="dropdown-item">{{ \App\Enums\Product\OrderByEnum::PRICE_H_L->value }}</button>
+                                                </form>
+                                            </div>
+                                        </div><!-- /.order by Price -->
+                                    </th>
+                                    <th>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default"><span
+                                                    class="text-bold">Категория</span></button>
+                                            <button type="button" class="btn btn-default dropdown-toggle dropdown-icon"
+                                                    data-toggle="dropdown">
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu" style="z-index: 10000;">
+                                                @foreach($categories as $category)
+                                                    <form action="{{ route('products.index') }}" method="get">
+                                                        <input name="categoryId"
+                                                               value="{{ $category->id }}"
+                                                               type="hidden">
+                                                        <button type="submit"
+                                                                class="dropdown-item">{{ $category->title }}</button>
+                                                    </form>
+                                                @endforeach
+                                            </div>
+                                        </div><!-- /.order by Category -->
+                                    </th>
                                     <th>Изображение</th>
                                     <th>Действия</th>
                                 </tr>
@@ -70,11 +171,12 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <img src="{{ $product->getImageUrl() }}" alt="product image" style="width: 100px;">
+                                            <img src="{{ $product->getImageUrl() }}" alt="product image"
+                                                 style="width: 100px;">
                                         </td>
-                                        <td class="d-flex"> <a href="{{ route('products.edit', $product->id) }}"
-                                                type="button"
-                                                class="btn btn-primary btn-sm mr-2">
+                                        <td class="d-flex"><a href="{{ route('products.edit', $product->id) }}"
+                                                              type="button"
+                                                              class="btn btn-primary btn-sm mr-2">
                                                 Редактировать
                                             </a>
                                             <!-- Button trigger modal delete product -->
@@ -100,7 +202,8 @@
                                                     @csrf
                                                     @method('delete')
                                                     <div class="modal-footer justify-content-end">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        <button type="button" class="btn btn-default"
+                                                                data-dismiss="modal">
                                                             Отмена
                                                         </button>
                                                         <button type="submit" class="btn btn-danger">Удалить</button>
@@ -117,14 +220,9 @@
                             </table>
                         </div>
                         <!-- /.card-body -->
+
                         <div class="card-footer clearfix">
-                            <ul class="pagination pagination-sm m-0 float-right">
-                                <li class="page-item"><a class="page-link" href="#">«</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">»</a></li>
-                            </ul>
+                            {{ $products->onEachSide(2)->withQueryString()->links() }}
                         </div>
                     </div>
                     <!-- /.card -->

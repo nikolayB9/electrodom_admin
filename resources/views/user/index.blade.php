@@ -34,8 +34,8 @@
                                 </div>
                             </form><!-- /.search by name or email -->
 
-                        </div>
-                        <!-- /.card-header -->
+                        </div><!-- /.card-header -->
+
                         <div class="card-body">
                             <table class="table">
                                 <thead>
