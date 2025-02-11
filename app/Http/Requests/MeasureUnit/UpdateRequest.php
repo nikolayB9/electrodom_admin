@@ -23,7 +23,11 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255', Rule::unique('measure_units', 'title')->ignore(request()->measure_unit)],
+            'title' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('measure_units', 'title')->ignore(request()->measure_unit)],
         ];
     }
 }

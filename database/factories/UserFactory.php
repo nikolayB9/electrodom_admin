@@ -30,6 +30,7 @@ class UserFactory extends Factory
             'surname' => fake()->randomElement([null, fake()->lastName]),
             'patronymic' => fake()->randomElement([null, ucfirst(fake()->word)]),
             'email' => fake()->unique()->safeEmail(),
+            'phone_number' => fake()->unique()->regexify('(8|\+7)9[0-9]{9}'),
             'gender' => fake()->randomElement(GenderEnum::class),
             'role' => RoleEnum::User,
             'address_id' => rand(0,1) ? Address::factory()->create() : null,

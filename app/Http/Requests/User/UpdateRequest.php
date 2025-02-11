@@ -29,7 +29,7 @@ class UpdateRequest extends FormRequest
                 Rule::unique(User::class)->ignore($this->route('user')),
             ],
             'phone_number' => [
-                'nullable',
+                'required',
                 'string',
                 'regex:/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7}$/',
                 Rule::unique(User::class)->ignore($this->route('user')),

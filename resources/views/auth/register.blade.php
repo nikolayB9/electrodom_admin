@@ -40,7 +40,8 @@
                                        :messages="$errors->get('phone_number')"
                                        data-inputmask="&quot;mask&quot;: &quot;9(999)999-9999&quot;"
                                        data-mask=""
-                                       inputmode="text"/>
+                                       inputmode="text"
+                                       required/>
 
                     <x-select name="gender">
                         <option disabled selected>Выберите пол</option>

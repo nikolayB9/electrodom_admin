@@ -8,7 +8,6 @@ use App\Http\Requests\API\V1\Product\IndexRequest;
 use App\Http\Resources\Product\IndexProductResource;
 use App\Http\Resources\Product\ProductResource;
 use App\Models\Product;
-use App\Services\API\V1\ProductService;
 
 class ProductController extends Controller
 {

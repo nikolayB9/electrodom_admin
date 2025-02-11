@@ -26,11 +26,25 @@ class UserSeeder extends Seeder
             'gender' => GenderEnum::Male,
             'role' => RoleEnum::Admin,
             'email' => 'admin@mail.ru',
+            'phone_number' => '89091112233',
+            'email_verified_at' => now(),
+            'password' => Hash::make('123123123'),
+        ];
+
+        $user = [
+            'name' => 'Иван',
+            'surname' => 'Иванов',
+            'patronymic' => 'Иванович',
+            'gender' => GenderEnum::Male,
+            'role' => RoleEnum::User,
+            'email' => 'user@mail.ru',
+            'phone_number' => '89094445566',
             'email_verified_at' => now(),
             'password' => Hash::make('123123123'),
         ];
 
         User::insert($admin);
+        User::insert($user);
 
         User::factory(20)
             ->create();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Enums\User\GenderEnum;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -13,9 +14,9 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController
 {
-    public function getGenders(): \Illuminate\Http\JsonResponse
+    public function show(Request $request)
     {
-        return response()->json(GenderEnum::cases());
+        return UserResource::make($request->user());
     }
 
     public function register(RegisterRequest $request): \Illuminate\Http\Response
@@ -47,5 +48,10 @@ class UserController
         $request->session()->regenerateToken();
 
         return response()->noContent();
+    }
+
+    public function getGenders(): \Illuminate\Http\JsonResponse
+    {
+        return response()->json(GenderEnum::cases());
     }
 }

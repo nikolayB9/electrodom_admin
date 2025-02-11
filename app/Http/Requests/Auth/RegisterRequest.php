@@ -26,13 +26,14 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         $imgParams = ProfileService::getImgParams();
+
         return [
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['nullable', 'string', 'max:255'],
             'patronymic' => ['nullable', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
             'phone_number' => [
-                'nullable',
+                'required',
                 'string',
                 'regex:/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7}$/',
                 'unique:users,phone_number',

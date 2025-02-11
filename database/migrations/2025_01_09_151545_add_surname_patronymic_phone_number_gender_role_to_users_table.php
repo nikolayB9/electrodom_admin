@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('surname')->nullable();
             $table->string('patronymic')->nullable();
-            $table->string('phone_number')->nullable()->unique();
+            $table->string('phone_number')->unique();
             $table->string('gender')->default(\App\Enums\User\GenderEnum::Unspecified);
             $table->string('role')->default(\App\Enums\User\RoleEnum::User);
         });
