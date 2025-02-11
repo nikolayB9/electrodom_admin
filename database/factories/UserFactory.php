@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\User\GenderEnum;
 use App\Enums\User\RoleEnum;
+use App\Models\Address;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
@@ -31,6 +32,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'gender' => fake()->randomElement(GenderEnum::class),
             'role' => RoleEnum::User,
+            'address_id' => rand(0,1) ? Address::factory()->create() : null,
             'email_verified_at' => now(),
             'password' => Hash::make('123123123'),
         ];

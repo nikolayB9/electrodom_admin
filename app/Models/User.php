@@ -22,9 +22,9 @@ class User extends Authenticatable
         return $this->hasOne(UserImage::class);
     }
 
-    public function address(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function address(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->hasOne(Address::class);
+        return $this->belongsTo(Address::class);
     }
 
     public function getImagePath(): ?string
@@ -55,21 +55,7 @@ class User extends Authenticatable
         return $this->name . ' ' . $this->surname;
     }
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'name',
-        'surname',
-        'patronymic',
-        'phone_number',
-        'gender',
-        'role',
-        'email',
-        'password',
-    ];
+    protected $guarded = false;
 
     /**
      * The attributes that should be hidden for serialization.

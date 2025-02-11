@@ -11,4 +11,9 @@ class Address extends Model
 
     protected $table = 'addresses';
     protected $guarded = false;
+
+    public function canBeDeleted()
+    {
+        return true;
+    }
 }

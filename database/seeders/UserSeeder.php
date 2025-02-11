@@ -32,11 +32,7 @@ class UserSeeder extends Seeder
 
         User::insert($admin);
 
-        User::factory(10)
-            ->create();
-
-        User::factory(10)
-            ->has(Address::factory())
+        User::factory(20)
             ->create();
     }
 }
