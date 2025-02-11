@@ -22,6 +22,11 @@ class User extends Authenticatable
         return $this->hasOne(UserImage::class);
     }
 
+    public function address(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Address::class);
+    }
+
     public function getImagePath(): ?string
     {
         return UserImage::where('user_id', $this->id)

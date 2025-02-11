@@ -110,6 +110,35 @@
                                                                 inputmode="text"/>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td class="text-bold">Адрес</td>
+                                        <td>
+
+                                            <label for="city" class="mb-1 font-weight-normal">Город</label>
+                                            <x-input-with-label name="address[city]"
+                                                                :value="$address->city ?? null"
+                                                                placeholder="Город"
+                                                                :messages="$errors->get('city')"/>
+
+                                            <label for="street" class="mb-1 font-weight-normal">Улица</label>
+                                            <x-input-with-label name="address[street]"
+                                                                :value="$address->street ?? null"
+                                                                placeholder="Улица"
+                                                                :messages="$errors->get('street')"/>
+
+                                            <label for="house" class="mb-1 font-weight-normal">Дом</label>
+                                            <x-input-with-label name="address[house]"
+                                                                :value="$address->house ?? null"
+                                                                placeholder="Дом"
+                                                                :messages="$errors->get('house')"/>
+
+                                            <label for="flat" class="mb-1 font-weight-normal">Квартира</label>
+                                            <x-input-with-label name="address[flat]"
+                                                                :value="$address->flat ?? null"
+                                                                placeholder="Квартира"
+                                                                :messages="$errors->get('flat')"/>
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -126,7 +155,8 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Удалить пользователя
-                                        "{{ $user->getFullName() . '; id = ' . $user->id . '; email = ' . $user->email }}" ?
+                                        "{{ $user->getFullName() . '; id = ' . $user->id . '; email = ' . $user->email }}
+                                        " ?
                                     </h5>
                                 </div>
 

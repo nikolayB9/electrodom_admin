@@ -42,6 +42,8 @@
                                     </button>
 
                                     <div class="dropdown-menu" role="menu">
+                                        <a href="{{ route('products.index', ['categoryId' => $category->id]) }}"
+                                           class="dropdown-item">Продукты</a>
                                         <a href="{{ route('categories.edit', $category->id) }}"
                                            class="dropdown-item">Редактировать</a>
 

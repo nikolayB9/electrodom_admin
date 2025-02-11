@@ -7,7 +7,7 @@ use App\Http\Filters\UserFilter;
 use App\Http\Requests\User\IndexRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Models\User;
-use App\Services\ProfileService;
+use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
@@ -24,18 +24,20 @@ class UserController extends Controller
         ]);
     }
 
-    public function edit(User $user, ProfileService $profileService): View
+    public function edit(User $user): View
     {
         return view('user.edit', [
             'user' => $user,
-            'imgParams' => $profileService::getImgParams(),
             'genders' => GenderEnum::getValues(),
+            'address' => $user->address,
         ]);
     }
 
-    public function update(UpdateRequest $request, User $user): RedirectResponse
+    public function update(UpdateRequest $request, User $user, UserService $userService): RedirectResponse
     {
-        $user->update($request->validated());
+        $data = $userService->processAddress($user, $request->validated());
+
+        $user->update($data);
 
         return Redirect::route('users.edit', $user->id)->with('status', 'Данные пользователя обновлены.');
     }

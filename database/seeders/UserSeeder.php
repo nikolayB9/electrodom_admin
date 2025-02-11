@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\User\GenderEnum;
 use App\Enums\User\RoleEnum;
+use App\Models\Address;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -31,6 +32,11 @@ class UserSeeder extends Seeder
 
         User::insert($admin);
 
-        User::factory(50)->create();
+        User::factory(10)
+            ->create();
+
+        User::factory(10)
+            ->has(Address::factory())
+            ->create();
     }
 }

@@ -2,9 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Attribute;
 use App\Models\MeasureUnit;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class AttributeService
