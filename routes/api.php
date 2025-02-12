@@ -22,3 +22,4 @@ Route::post('/products', [\App\Http\Controllers\API\V1\ProductController::class,
 Route::get('/products/{product}', [\App\Http\Controllers\API\V1\ProductController::class, 'show']);
 
 Route::post('/orders/store', [\App\Http\Controllers\API\V1\OrderController::class, 'store']);
+Route::post('/orders/get-sum-price', [\App\Http\Controllers\API\V1\OrderController::class, 'getSumPrice']);

@@ -35,7 +35,9 @@ class UserController extends Controller
 
     public function update(UpdateRequest $request, User $user, UserService $userService): RedirectResponse
     {
-        $data = $userService->processAddress($user, $request->validated());
+        $data = $request->validated();
+
+        $data = $userService->processAddress($user, $data);
 
         $user->update($data);
 

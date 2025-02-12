@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\API\V1\Order;
 
-use App\Enums\User\GenderEnum;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -28,8 +27,8 @@ class StoreRequest extends FormRequest
 
         return [
             'name' => ['required', 'string', 'max:255'],
-            'surname' => ['nullable', 'string', 'max:255'],
-            'patronymic' => ['nullable', 'string', 'max:255'],
+            'surname' => ['present', 'nullable', 'string', 'max:255'],
+            'patronymic' => ['present', 'nullable', 'string', 'max:255'],
             'email' => [
                 'required',
                 'string',
@@ -44,6 +43,19 @@ class StoreRequest extends FormRequest
                 'regex:/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7}$/',
                 Rule::unique(User::class)->ignore($user),
             ],
+            'city' => ['required', 'string', 'max:255'],
+            'street' => ['present', 'nullable', 'string', 'max:255'],
+            'house' => ['present', 'nullable', 'string', 'max:255'],
+            'flat' => ['present', 'nullable', 'string', 'max:255'],
+            'comment' => ['present', 'nullable', 'string', 'max:255'],
+            'products' => ['array'],
+            'products.*' => ['array:id,qty'],
+            'products.*.id' => ['integer', 'exists:products,id'],
+            'products.*.qty' => ['integer'],
+            'coupon' => ['present', 'nullable', 'decimal:0,2'],
+            'shipping' => ['present', 'nullable', 'decimal:0,2'],
+            'cart_price' => ['decimal:0,2'],
+            'total_price' => ['decimal:0,2'],
         ];
     }
 }

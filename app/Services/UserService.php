@@ -13,23 +13,13 @@ class UserService
         $currentAddress = $user->address;
 
         if ($currentAddress && $currentAddress->canBeDeleted()) {
-            $currentAddress->update($this->getAddressFields($address));
+            $currentAddress->update($address);
         } elseif ($address['city'] || $address['street'] || $address['house'] || $address['flat']) {
-            $newAddress = Address::create($this->getAddressFields($address));
+            $newAddress = Address::create($address);
             $data['address_id'] = $newAddress->id;
         }
 
         unset($data['address']);
         return $data;
-    }
-
-    private function getAddressFields(array $address): array
-    {
-        return [
-            'city' => $address['city'],
-            'street' => $address['street'],
-            'house' => $address['house'],
-            'flat' => $address['flat'],
-        ];
     }
 }
