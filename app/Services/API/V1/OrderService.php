@@ -12,7 +12,7 @@ class OrderService
     {
         $cartPrice = 0;
         foreach ($products as $product) {
-            $price = Product::whereId($product['id'])->value('price');
+            $price = $this->getProductPriceById($product['id']);
             $cartPrice += round($price * $product['qty'], 2);
         }
         return $cartPrice;
@@ -28,8 +28,15 @@ class OrderService
         return number_format($number, 2, '.', '');
     }
 
-    public function processAddress(User $user, array $addressData): Address
+    public function processAddress(User $user, array $data): Address
     {
+        $addressData = [
+            'city' => $data['city'],
+            'street' => $data['street'],
+            'house' => $data['house'],
+            'flat' => $data['flat'],
+        ];
+
         $currentUserAddress = $user->address;
 
         if ($currentUserAddress && $currentUserAddress->canBeDeleted()) {
@@ -40,5 +47,25 @@ class OrderService
             return $newAddress;
         }
         return $currentUserAddress;
+    }
+
+    public function processProductsForPivot(array $products): array
+    {
+        $dataPivot = [];
+        foreach ($products as $product) {
+            $productId = $product['id'];
+            $price = $this->getProductPriceById($productId);
+            $dataPivot[$productId] = [
+                'price' => $price,
+                'qty' => $product['qty'],
+                'total_price' => round($price * $product['qty'], 2),
+            ];
+        }
+        return $dataPivot;
+    }
+
+    private function getProductPriceById(int $productId): float
+    {
+        return Product::whereId($productId)->value('price');
     }
 }

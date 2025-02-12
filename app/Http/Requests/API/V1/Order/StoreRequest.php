@@ -23,7 +23,7 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        $user = $this->user() ?? null;
+        $user = auth()->user() ?? null;
 
         return [
             'name' => ['required', 'string', 'max:255'],
@@ -54,8 +54,6 @@ class StoreRequest extends FormRequest
             'products.*.qty' => ['integer'],
             'coupon' => ['present', 'nullable', 'decimal:0,2'],
             'shipping' => ['present', 'nullable', 'decimal:0,2'],
-            'cart_price' => ['decimal:0,2'],
-            'total_price' => ['decimal:0,2'],
         ];
     }
 }

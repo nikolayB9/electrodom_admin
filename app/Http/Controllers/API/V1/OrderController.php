@@ -5,11 +5,9 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\V1\Order\StoreRequest;
 use App\Http\Requests\API\V1\Order\SumPriceRequest;
-use App\Models\User;
+use App\Models\Order;
 use App\Services\API\V1\OrderService;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
+use App\Services\API\V1\UserService;
 
 class OrderController extends Controller
 {
@@ -17,43 +15,34 @@ class OrderController extends Controller
     {
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request, UserService $userService)
     {
         $data = $request->validated();
 
         $cartPrice = $this->orderService->getCartPrice($data['products']);
         $totalPrice = $this->orderService->getTotalPrice($cartPrice, $data['coupon'], $data['shipping']);
 
-        if ($cartPrice !== $data['cartPrice'] || $totalPrice !== $data['totalPrice']) {
-            return response()->json('Error');
-        }
-
-        if (!$request->user()) {
-            $temporaryPassword = Str::random(8);
-            $userData = [
-                'name' => $data['name'],
-                'surname' => $data['surname'],
-                'patronymic' => $data['patronymic'],
-                'email' => $data['email'],
-                'phone_number' => $data['phone_number'],
-                'password' => $temporaryPassword,
-            ];
-            $user = User::create($userData);
-            event(new Registered($user));
-            Auth::login($user);
+        if (!auth()->user()) {
+            $user = $userService->createFromOrder($data);
         } else {
-            $user = $request->user();
+            $user = auth()->user();
         }
 
-        $addressData = [
-          'city' => $data['city'],
-          'street' => $data['street'],
-          'house' => $data['house'],
-          'flat' => $data['flat'],
-        ];
+        $address = $this->orderService->processAddress($user, $data);
 
-        $address = $this->orderService->processAddress($user, $addressData);
+        $order = Order::create([
+            'user_id' => $user->id,
+            'address_id' => $address->id,
+            'cart_price' => $cartPrice,
+            'total_price' => $totalPrice,
+            'coupon' => $data['coupon'],
+            'shipping' => $data['shipping'],
+        ]);
 
+        $dataPivot = $this->orderService->processProductsForPivot($data['products']);
+        $order->products()->attach($dataPivot);
+
+        return response()->noContent();
     }
 
     public function getSumPrice(SumPriceRequest $request): \Illuminate\Http\JsonResponse
