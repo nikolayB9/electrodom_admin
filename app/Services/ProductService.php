@@ -21,17 +21,6 @@ class ProductService extends ImageHandlerService
         return collect($attributes);
     }
 
-    public function processTheDataForFiltering(array $data): array
-    {
-        if (!empty($data['categoryId'])) {
-            $category = Category::find($data['categoryId']);
-            unset($data['categoryId']);
-            $data['categories'] = $category->getIdsIncludingChildCategories();
-        }
-
-        return $data;
-    }
-
     public function add(array $data): Product
     {
         $data = $this->processImageSaving($data);

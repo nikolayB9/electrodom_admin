@@ -20,7 +20,7 @@ class ProductController extends Controller
 
     public function index(IndexRequest $request)
     {
-        $data = $this->productService->processTheDataForFiltering($request->validated());
+        $data = $request->only('title', 'categories', 'orderBy');
 
         $filter = app()->make(ProductFilter::class, ['queryParams' => array_filter($data)]);
         $products = Product::filter($filter)->with('category')->paginate(15);
