@@ -42,7 +42,7 @@ class ProductController extends Controller
     public function store(StoreRequest $request)
     {
         $product = $this->productService->add($request->validated());
-        return redirect()->route('products.show', $product->id)->with('status', 'Продукт успешно добавлен.');
+        return redirect()->route('products.edit', $product->id)->with('status', 'Продукт успешно добавлен.');
     }
 
     public function edit(Product $product)

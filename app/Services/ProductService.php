@@ -24,7 +24,6 @@ class ProductService extends ImageHandlerService
     public function add(array $data): Product
     {
         $data = $this->processImageSaving($data);
-        $data['is_published'] = !empty($data['is_published']);
 
         return DB::transaction(function () use ($data) {
             $product = Product::create($data);
@@ -39,7 +38,6 @@ class ProductService extends ImageHandlerService
     public function change(Product $product, array $data): void
     {
         $data = $this->processImageUpdating($product, $data);
-        $data['is_published'] = !empty($data['is_published']);
 
         DB::transaction(function () use ($product, $data) {
             $this->processAttributesUpdating($product, $data);

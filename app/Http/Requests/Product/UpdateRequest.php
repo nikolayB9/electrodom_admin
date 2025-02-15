@@ -26,8 +26,6 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         $imgParams = ProductService::getImgParams();
-        $categoryService = new CategoryService();
-        $lastLevelCategoryIds = $categoryService->getLastNestingLevelCategories()->pluck('id')->toArray();
 
         return [
             'title' => ['required', 'string', 'max:255',  Rule::unique(Product::class)->ignore(request()->product)],
@@ -35,7 +33,7 @@ class UpdateRequest extends FormRequest
             'price' => ['required', 'decimal:0,2', 'gte:0'],
             'old_price' => ['nullable', 'decimal:0,2', 'gte:0'],
             'count' => ['required', 'integer', 'gte:0'],
-            'category_id' => ['required', 'integer', 'exists:categories,id', Rule::in($lastLevelCategoryIds)],
+            'category_id' => ['required', 'integer', 'exists:categories,id', Rule::in($this->getPermittedCategories())],
             'image' => [
                 'nullable',
                 'image',
@@ -45,7 +43,20 @@ class UpdateRequest extends FormRequest
                 "dimensions:width={$imgParams['width']},height={$imgParams['height']}",
             ],
             'delete_image' => ['nullable', 'string', 'in:on'],
-            'is_published' => ['nullable', 'string', 'in:on'],
+            'is_published' => ['required', 'boolean'],
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'is_published' => (bool)($this->is_published),
+        ]);
+    }
+
+    private function getPermittedCategories(): array
+    {
+        $categoryService = new CategoryService();
+        return $categoryService->getLastNestingLevelCategories()->pluck('id')->toArray();
     }
 }

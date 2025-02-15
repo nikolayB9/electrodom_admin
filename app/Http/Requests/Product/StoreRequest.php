@@ -42,7 +42,14 @@ class StoreRequest extends FormRequest
                 "max:{$imgParams['maximum_size']}",
                 "dimensions:width={$imgParams['width']},height={$imgParams['height']}",
             ],
-            'is_published' => ['nullable', 'string', 'in:on'],
+            'is_published' => ['required', 'boolean'],
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+           'is_published' => (bool)($this->is_published),
+        ]);
     }
 }
