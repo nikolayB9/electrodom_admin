@@ -3,18 +3,34 @@
 namespace App\Models;
 
 use App\Enums\Order\PaymentStatusEnum;
+use App\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Order extends Model
 {
+    use Filterable;
+
     public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Product::class)
             ->withPivot(['price', 'qty', 'total_price']);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     protected $table = 'orders';
     protected $guarded = false;
+
+    protected function createdAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => \Illuminate\Support\Carbon::create($value)->format('d.m.Y'),
+        );
+    }
 
     protected function casts(): array
     {

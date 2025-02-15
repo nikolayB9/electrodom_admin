@@ -14,11 +14,15 @@
                     <div class="mb-3 d-flex">
 
                         <!-- Button trigger modal delete user -->
-                        <button class="btn btn-danger"
+                        <button class="btn btn-danger mr-2"
                                 data-toggle="modal"
                                 data-target="#modal-delete-user{{ $user->id }}">
                             Удалить пользователя
                         </button>
+
+                        <a href="{{ route('orders.index', ['userId' => $user->id]) }}" class="btn btn-primary">
+                            Заказы пользователя
+                        </a>
                     </div>
 
                     @if (session('status'))

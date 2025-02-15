@@ -29,6 +29,9 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
         ->except('show');
     Route::patch('products/{product}/update-attributes', [\App\Http\Controllers\ProductController::class, 'updateAttributes'])
         ->name('products.update_attributes');
+
+    Route::resource('orders', \App\Http\Controllers\OrderController::class)
+        ->except('show', 'create', 'store');
 });
 
 require __DIR__ . '/auth.php';

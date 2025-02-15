@@ -26,7 +26,6 @@
 
                     <div class="card">
                         <div class="card-header">
-
                             <form action="{{ route('products.index') }}" method="get">
                                 <div class="input-group input-group-sm float-right" style="width: 400px; height: 46px;">
                                     <input style=height:46px;"
@@ -43,7 +42,6 @@
                                     </div>
                                 </div>
                             </form><!-- /.search by title -->
-
                         </div><!-- /.card-header -->
 
                         <div class="card-body">

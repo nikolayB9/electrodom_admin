@@ -18,7 +18,7 @@ class ProductController extends Controller
     {
     }
 
-    public function index(IndexRequest $request,)
+    public function index(IndexRequest $request)
     {
         $data = $this->productService->processTheDataForFiltering($request->validated());
 
