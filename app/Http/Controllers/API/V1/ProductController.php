@@ -11,9 +11,9 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
-    public function index(IndexRequest $request, \App\Services\ProductService $productService)
+    public function index(IndexRequest $request)
     {
-        $data = $productService->processTheDataForFiltering($request->validated());
+        $data = $request->validated();
 
         $filter = app()->make(ProductFilter::class, ['queryParams' => array_filter($data)]);
         $products = Product::filter($filter)->paginate($data['showBy'], ['*'], 'page', $data['page']);

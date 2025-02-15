@@ -17,9 +17,25 @@ class Order extends Model
             ->withPivot(['price', 'qty', 'total_price']);
     }
 
-    public function user()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function address(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Address::class);
+    }
+
+    public function getFullAddress(): string
+    {
+        $address = $this->address;
+        $city = 'г.' . $address->city;
+        $street = $address->street ? ', ул.' . $address->street : null;
+        $house = $address->house ? ', д.' . $address->house : null;
+        $flat = $address->flat ? ', кв.' . $address->flat : null;
+
+        return $city . $street . $house . $flat;
     }
 
     protected $table = 'orders';

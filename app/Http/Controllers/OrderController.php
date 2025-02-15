@@ -20,9 +20,9 @@ class OrderController extends Controller
         ]);
     }
 
-    public function edit()
+    public function edit(Order $order)
     {
-
+        return view('order.edit', ['order' => $order]);
     }
 
     public function update()
