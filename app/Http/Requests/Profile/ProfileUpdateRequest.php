@@ -37,7 +37,7 @@ class ProfileUpdateRequest extends FormRequest
                 'regex:/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7}$/',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
-            'gender' => ['required', 'string', Rule::enum(GenderEnum::class)],
+            'gender' => ['required', 'integer', Rule::enum(GenderEnum::class)],
             'image' => [
                 'nullable',
                 'image',

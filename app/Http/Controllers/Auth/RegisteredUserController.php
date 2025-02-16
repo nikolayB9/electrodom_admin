@@ -38,7 +38,7 @@ class RegisteredUserController extends Controller
     public function store(RegisterRequest $request): RedirectResponse
     {
         $data = $request->validated();
-        $data['role'] = RoleEnum::Admin;
+        $data['role'] = RoleEnum::ADMIN;
 
         $user = $this->profileService->createUser($data);
 

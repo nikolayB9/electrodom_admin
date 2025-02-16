@@ -32,7 +32,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'phone_number' => fake()->unique()->regexify('(8|\+7)9[0-9]{9}'),
             'gender' => fake()->randomElement(GenderEnum::class),
-            'role' => RoleEnum::User,
+            'role' => RoleEnum::USER,
             'address_id' => rand(0,1) ? Address::factory()->create() : null,
             'email_verified_at' => now(),
             'password' => Hash::make('123123123'),

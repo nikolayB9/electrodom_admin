@@ -35,7 +35,7 @@
                                 {{ $user->surname . ' ' . $user->name . ' ' . $user->patronymic }}
                             </h3>
 
-                            <p class="text-muted text-center">{{ $user->role }}</p>
+                            <p class="text-muted text-center">{{ $user->getRoleName() }}</p>
 
                             <ul class="list-group list-group-unbordered mb-3">
                                 <li class="list-group-item">

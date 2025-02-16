@@ -48,7 +48,7 @@
                                     </tr>
                                     <tr>
                                         <td class="text-bold">Роль</td>
-                                        <td>{{ $user->role }}</td>
+                                        <td>{{ $user->getRoleName() }}</td>
                                     </tr>
                                     <tr>
                                         <td class="text-bold">Имя</td>

@@ -16,7 +16,7 @@ class isAdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->user()->role !== RoleEnum::Admin) {
+        if (auth()->user()->role !== RoleEnum::ADMIN) {
             return redirect()->route('lockscreen');
         }
 

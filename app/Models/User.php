@@ -50,6 +50,11 @@ class User extends Authenticatable
         return GenderEnum::getName($this->gender);
     }
 
+    public function getRoleName(): string
+    {
+        return RoleEnum::getName($this->role);
+    }
+
     public function getFullName(): string
     {
         return $this->name . ' ' . $this->surname;

@@ -34,7 +34,7 @@ class UpdateRequest extends FormRequest
                 'regex:/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7}$/',
                 Rule::unique(User::class)->ignore($this->route('user')),
             ],
-            'gender' => ['required', 'string', Rule::enum(GenderEnum::class)],
+            'gender' => ['required', 'integer', Rule::enum(GenderEnum::class)],
             'address' => ['array:city,street,house,flat'],
             'address.*' => ['nullable', 'string', 'max:255'],
         ];

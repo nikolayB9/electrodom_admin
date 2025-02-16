@@ -38,7 +38,7 @@ class RegisterRequest extends FormRequest
                 'regex:/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7}$/',
                 'unique:users,phone_number',
             ],
-            'gender' => ['sometimes', 'string', Rule::enum(GenderEnum::class)],
+            'gender' => ['sometimes', 'integer', Rule::enum(GenderEnum::class)],
             'image' => [
                 'nullable',
                 'image',

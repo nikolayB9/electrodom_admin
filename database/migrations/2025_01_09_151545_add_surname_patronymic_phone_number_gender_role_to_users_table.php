@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('patronymic')->nullable();
             $table->string('phone_number')->unique();
             $table->unsignedSmallInteger('gender')->default(\App\Enums\User\GenderEnum::UNSPECIFIED);
-            $table->string('role')->default(\App\Enums\User\RoleEnum::User);
+            $table->unsignedSmallInteger('role')->default(\App\Enums\User\RoleEnum::USER);
         });
     }
 
