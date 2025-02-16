@@ -52,6 +52,6 @@ class UserController
 
     public function getGenders(): \Illuminate\Http\JsonResponse
     {
-        return response()->json(GenderEnum::cases());
+        return response()->json(GenderEnum::getValuesWithNames());
     }
 }

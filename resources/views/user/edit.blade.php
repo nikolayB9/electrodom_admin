@@ -83,10 +83,10 @@
                                         <td>
                                             <x-select name="gender">
                                                 @foreach($genders as $gender)
-                                                    <option @selected($user->getGender() == $gender)
-                                                            @selected(old('gender') == $gender)
-                                                            value="{{ $gender }}">
-                                                        {{ $gender }}
+                                                    <option @selected($user->gender->value === $gender['value'])
+                                                            @selected(old('gender') === (string)$gender['value'])
+                                                            value="{{ $gender['value'] }}">
+                                                        {{ $gender['name'] }}
                                                     </option>
                                                 @endforeach
                                             </x-select>

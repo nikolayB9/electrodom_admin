@@ -45,9 +45,9 @@ class User extends Authenticatable
         return $imagePath ? url('/storage/' . $imagePath) : url(ProfileService::getPathToDefault());
     }
 
-    public function getGender(): string
+    public function getGenderName(): string
     {
-        return $this->gender->value;
+        return GenderEnum::getName($this->gender);
     }
 
     public function getFullName(): string

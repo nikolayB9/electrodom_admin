@@ -7,7 +7,6 @@
         <div class="card mb-3">
             <div class="card-body register-card-body">
                 <p class="login-box-msg">Регистрация нового администратора</p>
-
                 <form action="{{ route('register') }}" method="post" enctype="multipart/form-data">
                     @csrf
 
@@ -46,8 +45,9 @@
                     <x-select name="gender">
                         <option disabled selected>Выберите пол</option>
                         @foreach($genders as $gender)
-                            <option @selected(old('gender') == $gender) value="{{ $gender }}">
-                                {{ $gender }}
+                            <option @selected(old('gender') === (string)$gender['value'])
+                                    value="{{ $gender['value'] }}">
+                                {{ $gender['name'] }}
                             </option>
                         @endforeach
                     </x-select>

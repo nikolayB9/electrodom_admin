@@ -4,11 +4,9 @@ namespace Database\Seeders;
 
 use App\Enums\User\GenderEnum;
 use App\Enums\User\RoleEnum;
-use App\Models\Address;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -23,7 +21,7 @@ class UserSeeder extends Seeder
             'name' => 'Админ',
             'surname' => 'Админов',
             'patronymic' => 'Админович',
-            'gender' => GenderEnum::Male,
+            'gender' => GenderEnum::MALE,
             'role' => RoleEnum::Admin,
             'email' => 'admin@mail.ru',
             'phone_number' => '89091112233',
@@ -35,7 +33,7 @@ class UserSeeder extends Seeder
             'name' => 'Иван',
             'surname' => 'Иванов',
             'patronymic' => 'Иванович',
-            'gender' => GenderEnum::Male,
+            'gender' => GenderEnum::MALE,
             'role' => RoleEnum::User,
             'email' => 'user@mail.ru',
             'phone_number' => '89094445566',

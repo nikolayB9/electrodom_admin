@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\User;
 
+use App\Enums\User\GenderEnum;
 use App\Http\Resources\Address\AddressResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -22,7 +23,7 @@ class UserResource extends JsonResource
             'surname' => $this->surname,
             'patronymic' => $this->patronymic,
             'phone_number' => $this->phone_number,
-            'gender' => $this->gender,
+            'gender' => GenderEnum::getName($this->gender),
             'address' => AddressResource::make($this->address),
         ];
     }

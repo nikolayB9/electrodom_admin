@@ -45,7 +45,7 @@
                                     <b>Номер моб.</b> <a class="float-right">{{ $user->phone_number }}</a>
                                 </li>
                                 <li class="list-group-item">
-                                    <b>Пол</b> <a class="float-right">{{ $user->getGender() }}</a>
+                                    <b>Пол</b> <a class="float-right">{{ $user->getGenderName() }}</a>
                                 </li>
                             </ul>
 
