@@ -51,10 +51,10 @@
                                     </tr>
                                     <tr>
                                         <td class="text-bold">Статус</td>
-                                        <td>{{ $order->payment_status->name }}</td>
+                                        <td>{{ $order->getStatusName() }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-bold">Состав заказа:</td>
+                                        <td class="text-bold">Состав заказа</td>
                                         <td>
                                             @foreach($order->products as $product)
                                                 <div>

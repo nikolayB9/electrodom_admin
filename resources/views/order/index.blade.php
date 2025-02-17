@@ -131,7 +131,7 @@
                                             </div><!-- /.order by User -->
                                         </td>
                                         <td>
-                                            {{ $order->payment_status->name }}
+                                            {{ $order->getStatusName() }}
                                         </td>
                                         <td class="d-flex"><a href="{{ route('orders.edit', $order->id) }}"
                                                               type="button"

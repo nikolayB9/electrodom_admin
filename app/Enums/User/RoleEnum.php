@@ -9,10 +9,14 @@ enum RoleEnum: int
 
     public static function getValuesWithNames(): array
     {
-        return [
-            ['value' => self::USER->value, 'name' => self::getName(self::USER)],
-            ['value' => self::ADMIN->value, 'name' => self::getName(self::ADMIN)],
-        ];
+        $data = [];
+        foreach (RoleEnum::cases() as $enum) {
+            $data[] = [
+                'value' => $enum->value,
+                'name' => self::getName($enum),
+            ];
+        }
+        return $data;
     }
 
     public static function getName(RoleEnum $role): string

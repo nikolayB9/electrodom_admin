@@ -10,11 +10,14 @@ enum GenderEnum: int
 
     public static function getValuesWithNames(): array
     {
-        return [
-            ['value' => self::UNSPECIFIED->value, 'name' => self::getName(self::UNSPECIFIED)],
-            ['value' => self::MALE->value, 'name' => self::getName(self::MALE)],
-            ['value' => self::FEMALE->value, 'name' => self::getName(self::FEMALE)],
-        ];
+        $data = [];
+        foreach (GenderEnum::cases() as $enum) {
+            $data[] = [
+                'value' => $enum->value,
+                'name' => self::getName($enum),
+            ];
+        }
+        return $data;
     }
 
     public static function getName(GenderEnum $gender): string

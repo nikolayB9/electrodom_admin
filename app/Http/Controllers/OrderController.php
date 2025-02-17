@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Order\StatusEnum;
 use App\Http\Filters\OrderFilter;
 use App\Http\Requests\Order\IndexRequest;
 use App\Models\Order;

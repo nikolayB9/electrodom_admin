@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\Order\PaymentStatusEnum;
+use App\Enums\Order\StatusEnum;
 use App\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -25,6 +25,11 @@ class Order extends Model
     public function address(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Address::class);
+    }
+
+    public function getStatusName(): string
+    {
+        return StatusEnum::getName($this->status);
     }
 
     public function getFullAddress(): string
@@ -51,7 +56,7 @@ class Order extends Model
     protected function casts(): array
     {
         return [
-            'payment_status' => PaymentStatusEnum::class,
+            'status' => StatusEnum::class,
         ];
     }
 }

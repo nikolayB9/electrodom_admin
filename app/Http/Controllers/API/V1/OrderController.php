@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Enums\Order\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\V1\Order\StoreRequest;
 use App\Http\Requests\API\V1\Order\SumPriceRequest;
@@ -33,6 +34,7 @@ class OrderController extends Controller
         $order = Order::create([
             'user_id' => $user->id,
             'address_id' => $address->id,
+            'status' => StatusEnum::CREATED,
             'cart_price' => $cartPrice,
             'total_price' => $totalPrice,
             'coupon' => $data['coupon'],
