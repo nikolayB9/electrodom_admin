@@ -67,10 +67,10 @@ class ProductFilter extends AbstractFilter
             case OrderByEnum::NAME_Z_A->value:
                 $builder->orderBy('title', 'desc');
                 break;
-            case OrderByEnum::PRICE_L_H->value:
+            case OrderByEnum::PRICE_LOW_HIGH->value:
                 $builder->orderBy('price');
                 break;
-            case OrderByEnum::PRICE_H_L->value:
+            case OrderByEnum::PRICE_HIGH_LOW->value:
                 $builder->orderBy('price', 'desc');
                 break;
             case OrderByEnum::ID_ASC->value:

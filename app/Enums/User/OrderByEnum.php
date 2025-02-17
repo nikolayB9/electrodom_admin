@@ -2,14 +2,30 @@
 
 namespace App\Enums\User;
 
+use App\Enums\Attributes\Description;
+use App\Enums\Traits\GetsAttributes;
+
 enum OrderByEnum: string
 {
-    case ID_ASC = 'По возрастанию';
-    case ID_DESC = 'По убыванию';
-    case EMAIL_A_Z = 'a - z';
-    case EMAIL_Z_A = 'z - a';
-    case NAME_A_Z = 'а - я';
-    case NAME_Z_A = 'я - а';
+    use GetsAttributes;
+
+    #[Description('По возрастанию ID')]
+    case ID_ASC = 'id_asc';
+
+    #[Description('По убыванию ID')]
+    case ID_DESC = 'id_desc';
+
+    #[Description('a - z')]
+    case EMAIL_A_Z = 'email_a_z';
+
+    #[Description('z - a')]
+    case EMAIL_Z_A = 'email_z_a';
+
+    #[Description('а - я')]
+    case NAME_A_Z = 'name_a_z';
+
+    #[Description('я - а')]
+    case NAME_Z_A = 'name_z_a';
 }
 
 

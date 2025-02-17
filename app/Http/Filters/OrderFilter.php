@@ -39,10 +39,10 @@ class OrderFilter extends AbstractFilter
             case OrderByEnum::DATE_OLD_NEW->value:
                 $builder->orderBy('created_at');
                 break;
-            case OrderByEnum::PRICE_L_H->value:
+            case OrderByEnum::PRICE_LOW_HIGH->value:
                 $builder->orderBy('total_price');
                 break;
-            case OrderByEnum::PRICE_H_L->value:
+            case OrderByEnum::PRICE_HIGH_LOW->value:
                 $builder->orderBy('total_price', 'desc');
                 break;
             case OrderByEnum::ID_DESC->value:

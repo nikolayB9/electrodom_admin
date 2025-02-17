@@ -55,14 +55,18 @@
                                                            value="{{ \App\Enums\Order\OrderByEnum::DATE_NEW_OLD->value }}"
                                                            type="hidden">
                                                     <button type="submit"
-                                                            class="dropdown-item">{{ \App\Enums\Order\OrderByEnum::DATE_NEW_OLD->value }}</button>
+                                                            class="dropdown-item">
+                                                        {{ \App\Enums\Order\OrderByEnum::getDescription(\App\Enums\Order\OrderByEnum::DATE_NEW_OLD) }}
+                                                    </button>
                                                 </form>
                                                 <form action="{{ route('orders.index') }}" method="get">
                                                     <input name="orderBy"
                                                            value="{{ \App\Enums\Order\OrderByEnum::DATE_OLD_NEW->value }}"
                                                            type="hidden">
                                                     <button type="submit"
-                                                            class="dropdown-item">{{ \App\Enums\Order\OrderByEnum::DATE_OLD_NEW->value }}</button>
+                                                            class="dropdown-item">
+                                                        {{ \App\Enums\Order\OrderByEnum::getDescription(\App\Enums\Order\OrderByEnum::DATE_OLD_NEW) }}
+                                                    </button>
                                                 </form>
                                             </div>
                                         </div><!-- /.order by Date -->
@@ -78,17 +82,22 @@
                                             <div class="dropdown-menu" role="menu">
                                                 <form action="{{ route('orders.index') }}" method="get">
                                                     <input name="orderBy"
-                                                           value="{{ \App\Enums\Order\OrderByEnum::PRICE_L_H->value }}"
+                                                           value="{{ \App\Enums\Order\OrderByEnum::PRICE_LOW_HIGH->value }}"
                                                            type="hidden">
                                                     <button type="submit"
-                                                            class="dropdown-item">{{ \App\Enums\Order\OrderByEnum::PRICE_L_H->value }}</button>
+                                                            class="dropdown-item">
+                                                        {{ \App\Enums\Order\OrderByEnum::getDescription(\App\Enums\Order\OrderByEnum::PRICE_LOW_HIGH) }}
+                                                    </button>
                                                 </form>
                                                 <form action="{{ route('orders.index') }}" method="get">
                                                     <input name="orderBy"
-                                                           value="{{ \App\Enums\Order\OrderByEnum::PRICE_H_L->value }}"
+                                                           value="{{ \App\Enums\Order\OrderByEnum::PRICE_HIGH_LOW->value }}"
                                                            type="hidden">
                                                     <button type="submit"
-                                                            class="dropdown-item">{{ \App\Enums\Order\OrderByEnum::PRICE_H_L->value }}</button>
+                                                            class="dropdown-item">
+                                                        {{ \App\Enums\Order\OrderByEnum::getDescription(\App\Enums\Order\OrderByEnum::PRICE_HIGH_LOW) }}
+
+                                                    </button>
                                                 </form>
                                             </div>
                                         </div><!-- /.order by totalPrice -->

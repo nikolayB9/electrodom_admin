@@ -30,7 +30,12 @@ class CategoryController extends Controller
         return response()->json([
             'attributes' => $category->attributesWithUnitTitleAndValues(),
             'prices' => $category->getMinAndMaxPrices(),
-            'orderBy' => OrderByEnum::cases(),
-        ]);
+            'orderBy' => collect(OrderByEnum::asSelectArray())
+                ->filter(function ($item) {
+                    return $item['value'] !== OrderByEnum::ID_DESC->value &&
+                        $item['value'] !== OrderByEnum::ID_ASC->value;
+                })->toArray(),
+            ]);
     }
 }
+

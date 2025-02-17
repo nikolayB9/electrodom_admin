@@ -62,14 +62,18 @@
                                                            value="{{ \App\Enums\Product\OrderByEnum::ID_ASC->value }}"
                                                            type="hidden">
                                                     <button type="submit"
-                                                            class="dropdown-item">{{ \App\Enums\Product\OrderByEnum::ID_ASC->value }}</button>
+                                                            class="dropdown-item">
+                                                        {{ \App\Enums\Product\OrderByEnum::getDescription(\App\Enums\Product\OrderByEnum::ID_ASC) }}
+                                                    </button>
                                                 </form>
                                                 <form action="{{ route('products.index') }}" method="get">
                                                     <input name="orderBy"
                                                            value="{{ \App\Enums\Product\OrderByEnum::ID_DESC->value }}"
                                                            type="hidden">
                                                     <button type="submit"
-                                                            class="dropdown-item">{{ \App\Enums\Product\OrderByEnum::ID_DESC->value }}</button>
+                                                            class="dropdown-item">
+                                                        {{ \App\Enums\Product\OrderByEnum::getDescription(\App\Enums\Product\OrderByEnum::ID_DESC) }}
+                                                    </button>
                                                 </form>
                                             </div>
                                         </div><!-- /.order by ID -->
@@ -88,14 +92,18 @@
                                                            value="{{ \App\Enums\Product\OrderByEnum::NAME_A_Z->value }}"
                                                            type="hidden">
                                                     <button type="submit"
-                                                            class="dropdown-item">{{ \App\Enums\Product\OrderByEnum::NAME_A_Z->value }}</button>
+                                                            class="dropdown-item">
+                                                        {{ \App\Enums\Product\OrderByEnum::getDescription(\App\Enums\Product\OrderByEnum::NAME_A_Z) }}
+                                                    </button>
                                                 </form>
                                                 <form action="{{ route('products.index') }}" method="get">
                                                     <input name="orderBy"
                                                            value="{{ \App\Enums\Product\OrderByEnum::NAME_Z_A->value }}"
                                                            type="hidden">
                                                     <button type="submit"
-                                                            class="dropdown-item">{{ \App\Enums\Product\OrderByEnum::NAME_Z_A->value }}</button>
+                                                            class="dropdown-item">
+                                                        {{ \App\Enums\Product\OrderByEnum::getDescription(\App\Enums\Product\OrderByEnum::NAME_Z_A) }}
+                                                    </button>
                                                 </form>
                                             </div>
                                         </div><!-- /.order by Title -->
@@ -111,17 +119,21 @@
                                             <div class="dropdown-menu" role="menu">
                                                 <form action="{{ route('products.index') }}" method="get">
                                                     <input name="orderBy"
-                                                           value="{{ \App\Enums\Product\OrderByEnum::PRICE_L_H->value }}"
+                                                           value="{{ \App\Enums\Product\OrderByEnum::PRICE_LOW_HIGH->value }}"
                                                            type="hidden">
                                                     <button type="submit"
-                                                            class="dropdown-item">{{ \App\Enums\Product\OrderByEnum::PRICE_L_H->value }}</button>
+                                                            class="dropdown-item">
+                                                        {{ \App\Enums\Product\OrderByEnum::getDescription(\App\Enums\Product\OrderByEnum::PRICE_LOW_HIGH) }}
+                                                    </button>
                                                 </form>
                                                 <form action="{{ route('products.index') }}" method="get">
                                                     <input name="orderBy"
-                                                           value="{{ \App\Enums\Product\OrderByEnum::PRICE_H_L->value }}"
+                                                           value="{{ \App\Enums\Product\OrderByEnum::PRICE_HIGH_LOW->value }}"
                                                            type="hidden">
                                                     <button type="submit"
-                                                            class="dropdown-item">{{ \App\Enums\Product\OrderByEnum::PRICE_H_L->value }}</button>
+                                                            class="dropdown-item">
+                                                        {{ \App\Enums\Product\OrderByEnum::getDescription(\App\Enums\Product\OrderByEnum::PRICE_HIGH_LOW) }}
+                                                    </button>
                                                 </form>
                                             </div>
                                         </div><!-- /.order by Price -->
