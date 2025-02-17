@@ -2,36 +2,28 @@
 
 namespace App\Enums\Order;
 
+use App\Enums\Attributes\Description;
+use App\Enums\Traits\GetsAttributes;
+
+
 enum StatusEnum: int
 {
+    use GetsAttributes;
+
+    #[Description('Создан')]
     case CREATED = 1;
+
+    #[Description('Оплачен')]
     case PAID = 2;
+
+    #[Description('Отправлен')]
     case SENT = 3;
+
+    #[Description('Получен')]
     case RECEIVED = 4;
+
+    #[Description('Отменен')]
     case CANCELLED = 5;
-
-    public static function getValuesWithNames(): array
-    {
-        $data = [];
-        foreach (StatusEnum::cases() as $enum) {
-            $data[] = [
-              'value' => $enum->value,
-              'name' => self::getName($enum),
-            ];
-        }
-        return $data;
-    }
-
-    public static function getName(StatusEnum $status): string
-    {
-        return match ($status) {
-            self::CREATED => 'создан',
-            self::PAID => 'оплачен',
-            self::SENT => 'отправлен',
-            self::RECEIVED => 'получен',
-            self::CANCELLED => 'отменен',
-        };
-    }
 }
 
 

@@ -2,28 +2,16 @@
 
 namespace App\Enums\User;
 
+use App\Enums\Attributes\Description;
+use App\Enums\Traits\GetsAttributes;
+
 enum RoleEnum: int
 {
+    use GetsAttributes;
+
+    #[Description('Покупатель')]
     case USER = 1;
+
+    #[Description('Администратор')]
     case ADMIN = 2;
-
-    public static function getValuesWithNames(): array
-    {
-        $data = [];
-        foreach (RoleEnum::cases() as $enum) {
-            $data[] = [
-                'value' => $enum->value,
-                'name' => self::getName($enum),
-            ];
-        }
-        return $data;
-    }
-
-    public static function getName(RoleEnum $role): string
-    {
-        return match ($role) {
-            self::USER => 'покупатель',
-            self::ADMIN => 'администратор',
-        };
-    }
 }

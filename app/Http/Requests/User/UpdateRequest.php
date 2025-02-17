@@ -31,7 +31,7 @@ class UpdateRequest extends FormRequest
             'phone_number' => [
                 'required',
                 'string',
-                'regex:/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7}$/',
+                'regex:/^((\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7}$/',
                 Rule::unique(User::class)->ignore($this->route('user')),
             ],
             'gender' => ['required', 'integer', Rule::enum(GenderEnum::class)],

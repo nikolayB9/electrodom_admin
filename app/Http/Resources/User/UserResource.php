@@ -23,7 +23,7 @@ class UserResource extends JsonResource
             'surname' => $this->surname,
             'patronymic' => $this->patronymic,
             'phone_number' => $this->phone_number,
-            'gender' => GenderEnum::getName($this->gender),
+            'gender' => GenderEnum::getDescription($this->gender),
             'address' => AddressResource::make($this->address),
         ];
     }

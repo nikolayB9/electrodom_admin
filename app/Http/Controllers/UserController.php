@@ -28,7 +28,7 @@ class UserController extends Controller
     {
         return view('user.edit', [
             'user' => $user,
-            'genders' => GenderEnum::getValuesWithNames(),
+            'genders' => GenderEnum::asSelectArray(),
             'address' => $user->address,
         ]);
     }

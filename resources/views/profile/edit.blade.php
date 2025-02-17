@@ -54,7 +54,7 @@
                                                     label="Моб.телефон"
                                                     placeholder="Введите моб.телефон"
                                                     :messages="$errors->get('phone_number')"
-                                                    data-inputmask="&quot;mask&quot;: &quot;9(999)9999999&quot;"
+                                                    data-inputmask="&quot;mask&quot;: &quot;+7(999)9999999&quot;"
                                                     data-mask=""
                                                     inputmode="text"
                                                     required/>

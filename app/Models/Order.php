@@ -29,7 +29,7 @@ class Order extends Model
 
     public function getStatusName(): string
     {
-        return StatusEnum::getName($this->status);
+        return StatusEnum::getDescription($this->status);
     }
 
     public function getFullAddress(): string

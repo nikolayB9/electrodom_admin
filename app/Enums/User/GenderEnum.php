@@ -2,30 +2,19 @@
 
 namespace App\Enums\User;
 
+use App\Enums\Attributes\Description;
+use App\Enums\Traits\GetsAttributes;
+
 enum GenderEnum: int
 {
+    use GetsAttributes;
+
+    #[Description('Не указан')]
     case UNSPECIFIED = 0;
+
+    #[Description('Мужской')]
     case MALE = 1;
+
+    #[Description('Женский')]
     case FEMALE = 2;
-
-    public static function getValuesWithNames(): array
-    {
-        $data = [];
-        foreach (GenderEnum::cases() as $enum) {
-            $data[] = [
-                'value' => $enum->value,
-                'name' => self::getName($enum),
-            ];
-        }
-        return $data;
-    }
-
-    public static function getName(GenderEnum $gender): string
-    {
-        return match ($gender) {
-            self::UNSPECIFIED => 'не указан',
-            self::MALE => 'мужской',
-            self::FEMALE => 'женский',
-        };
-    }
 }

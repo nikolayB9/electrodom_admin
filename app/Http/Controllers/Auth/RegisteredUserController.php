@@ -25,7 +25,7 @@ class RegisteredUserController extends Controller
     {
 
         return view('auth.register', [
-            'genders' => GenderEnum::getValuesWithNames(),
+            'genders' => GenderEnum::asSelectArray(),
             'imgParams' => $this->profileService::getImgParams(),
         ]);
     }

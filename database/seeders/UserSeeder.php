@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'gender' => GenderEnum::MALE,
             'role' => RoleEnum::ADMIN,
             'email' => 'admin@mail.ru',
-            'phone_number' => '89091112233',
+            'phone_number' => '+79091112233',
             'email_verified_at' => now(),
             'password' => Hash::make('123123123'),
         ];
@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
             'gender' => GenderEnum::MALE,
             'role' => RoleEnum::USER,
             'email' => 'user@mail.ru',
-            'phone_number' => '89094445566',
+            'phone_number' => '+79094445566',
             'email_verified_at' => now(),
             'password' => Hash::make('123123123'),
         ];

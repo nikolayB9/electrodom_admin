@@ -32,7 +32,7 @@ class ProfileController extends Controller
         return view('profile.edit', [
             'user' => $request->user(),
             'imgParams' => $this->profileService::getImgParams(),
-            'genders' => GenderEnum::getValuesWithNames(),
+            'genders' => GenderEnum::asSelectArray(),
         ]);
     }
 

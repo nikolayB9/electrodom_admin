@@ -47,12 +47,12 @@ class User extends Authenticatable
 
     public function getGenderName(): string
     {
-        return GenderEnum::getName($this->gender);
+        return GenderEnum::getDescription($this->gender);
     }
 
     public function getRoleName(): string
     {
-        return RoleEnum::getName($this->role);
+        return RoleEnum::getDescription($this->role);
     }
 
     public function getFullName(): string
