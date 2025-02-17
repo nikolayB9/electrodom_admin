@@ -13,7 +13,7 @@ class ProductController extends Controller
 {
     public function index(IndexRequest $request)
     {
-        $data = $request->validated();
+        $data = $request->only('categories', 'attributes', 'priceMin', 'priceMax', 'orderBy', 'showBy', 'page');
 
         $filter = app()->make(ProductFilter::class, ['queryParams' => array_filter($data)]);
         $products = Product::filter($filter)->paginate($data['showBy'], ['*'], 'page', $data['page']);
