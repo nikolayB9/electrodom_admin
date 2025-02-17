@@ -43,7 +43,7 @@
                                         <td>{{ $order->id }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-bold">Пользователь</td>
+                                        <td class="text-bold">Покупатель</td>
                                         <td><a href="{{ route('users.edit', $order->user->id) }}">
                                                 {{ $order->user->getFullName() }}
                                             </a>
@@ -65,23 +65,25 @@
                                                 <div class="text-right">
                                                     x {{ $product->pivot->qty }} = {{ $product->pivot->total_price }} ₽
                                                 </div>
-                                                <div class="d-flex justify-content-between my-2">
-                                                    <div>Купон:</div> <div>- {{ $order->coupon }} ₽</div>
-                                                </div>
-                                                <div class="d-flex justify-content-between mb-3">
-                                                    <div>Доставка:</div> <div>+ {{ $order->shipping }} ₽</div>
-                                                </div>
-                                                <div class="d-flex justify-content-between h4">
-                                                    <div>Итого:</div> <div>= {{ $order->total_price }} ₽</div>
-                                                </div>
                                             @endforeach
+                                            <div class="d-flex justify-content-between my-2">
+                                                <div>Купон:</div>
+                                                <div>- {{ $order->coupon }} ₽</div>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-3">
+                                                <div>Доставка:</div>
+                                                <div>+ {{ $order->shipping }} ₽</div>
+                                            </div>
+                                            <div class="d-flex justify-content-between h4">
+                                                <div>Итого:</div>
+                                                <div>= {{ $order->total_price }} ₽</div>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="text-bold">Адрес доставки</td>
                                         <td>{{ $order->getFullAddress() }}</td>
                                     </tr>
-
 
 
                                     </tbody>
