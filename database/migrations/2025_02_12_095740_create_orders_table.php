@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->decimal('total_price');
             $table->decimal('coupon')->nullable();
             $table->decimal('shipping')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
