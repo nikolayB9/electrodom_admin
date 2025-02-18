@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Enums\Order\StatusEnum;
 use App\Models\Traits\Filterable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
-    use Filterable, SoftDeletes;
+    use Filterable, SoftDeletes, HasFactory;
 
     public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {

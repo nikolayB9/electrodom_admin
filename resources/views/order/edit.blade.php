@@ -63,7 +63,7 @@
                                                     </a>
                                                 </div>
                                                 <div class="text-right">
-                                                    x {{ $product->pivot->qty }} = {{ $product->pivot->total_price }} ₽
+                                                    {{ $product->pivot->price }} x {{ $product->pivot->qty }} = {{ $product->pivot->total_price }} ₽
                                                 </div>
                                             @endforeach
                                             <div class="d-flex justify-content-between my-2">
