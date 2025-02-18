@@ -123,25 +123,25 @@
                                             <x-input-with-label name="address[city]"
                                                                 :value="$address->city ?? null"
                                                                 placeholder="Город"
-                                                                :messages="$errors->get('city')"/>
+                                                                :messages="$errors->get('address.city')"/>
 
                                             <label for="street" class="mb-1 font-weight-normal">Улица</label>
                                             <x-input-with-label name="address[street]"
                                                                 :value="$address->street ?? null"
                                                                 placeholder="Улица"
-                                                                :messages="$errors->get('street')"/>
+                                                                :messages="$errors->get('address.street')"/>
 
                                             <label for="house" class="mb-1 font-weight-normal">Дом</label>
                                             <x-input-with-label name="address[house]"
                                                                 :value="$address->house ?? null"
                                                                 placeholder="Дом"
-                                                                :messages="$errors->get('house')"/>
+                                                                :messages="$errors->get('address.house')"/>
 
                                             <label for="flat" class="mb-1 font-weight-normal">Квартира</label>
                                             <x-input-with-label name="address[flat]"
                                                                 :value="$address->flat ?? null"
                                                                 placeholder="Квартира"
-                                                                :messages="$errors->get('flat')"/>
+                                                                :messages="$errors->get('address.flat')"/>
                                         </td>
                                     </tr>
                                     </tbody>

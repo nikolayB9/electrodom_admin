@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Order\OrderByEnum;
+use App\Enums\Order\StatusEnum;
 use App\Http\Filters\OrderFilter;
 use App\Http\Requests\Order\IndexRequest;
+use App\Http\Requests\Order\UpdateRequest;
 use App\Models\Order;
 
 class OrderController extends Controller
@@ -23,12 +24,22 @@ class OrderController extends Controller
 
     public function edit(Order $order)
     {
-        return view('order.edit', ['order' => $order]);
+        return view('order.edit', [
+            'order' => $order,
+            'statuses' => StatusEnum::asSelectArray(),
+            'address' => $order->address,
+        ]);
     }
 
-    public function update()
+    public function update(UpdateRequest $request, Order $order)
     {
+        $data = $request->validated();
+        $order->update([
+            'status' => $data['status'],
+        ]);
+        $order->address()->update($data['address']);
 
+        return redirect()->route('orders.edit', $order->id)->with('status', 'Данные заказа обновлены.');
     }
 
     public function destroy(Order $order)

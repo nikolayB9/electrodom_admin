@@ -34,7 +34,7 @@
                         <!-- form start -->
                         <form action="{{ route('orders.update', $order->id) }}" method="post">
                             @csrf
-                            @method('patch')
+                            @method('put')
                             <div class="card-body">
                                 <table class="table">
                                     <tbody>
@@ -51,7 +51,18 @@
                                     </tr>
                                     <tr>
                                         <td class="text-bold">Статус</td>
-                                        <td>{{ $order->getStatusName() }}</td>
+                                        <td>
+                                            <x-select name="status"
+                                                      :messages="$errors->get('status')">
+                                                @foreach($statuses as $status)
+                                                    <option value="{{ $status['value'] }}"
+                                                        @selected((old('status') === (string)$status['value'])
+                                                            || $order->status->value == $status['value'])>
+                                                        {{ $status['name'] }}
+                                                    </option>
+                                                @endforeach
+                                            </x-select>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class="text-bold">Состав заказа</td>
@@ -62,8 +73,9 @@
                                                         {{ $product->id . '.' . $product->title }}
                                                     </a>
                                                 </div>
-                                                <div class="text-right">
-                                                    {{ $product->pivot->price }} x {{ $product->pivot->qty }} = {{ $product->pivot->total_price }} ₽
+                                                <div class="text-right border-bottom">
+                                                    {{ $product->pivot->price }} x {{ $product->pivot->qty }}
+                                                    = {{ $product->pivot->total_price }} ₽
                                                 </div>
                                             @endforeach
                                             <div class="d-flex justify-content-between my-2">
@@ -82,7 +94,32 @@
                                     </tr>
                                     <tr>
                                         <td class="text-bold">Адрес доставки</td>
-                                        <td>{{ $order->getFullAddress() }}</td>
+                                        <td>
+
+                                            <label for="city" class="mb-1 font-weight-normal">Город</label>
+                                            <x-input-with-label name="address[city]"
+                                                                :value="$address->city ?? null"
+                                                                placeholder="Город"
+                                                                :messages="$errors->get('address.city')"/>
+
+                                            <label for="street" class="mb-1 font-weight-normal">Улица</label>
+                                            <x-input-with-label name="address[street]"
+                                                                :value="$address->street ?? null"
+                                                                placeholder="Улица"
+                                                                :messages="$errors->get('address.street')"/>
+
+                                            <label for="house" class="mb-1 font-weight-normal">Дом</label>
+                                            <x-input-with-label name="address[house]"
+                                                                :value="$address->house ?? null"
+                                                                placeholder="Дом"
+                                                                :messages="$errors->get('address.house')"/>
+
+                                            <label for="flat" class="mb-1 font-weight-normal">Квартира</label>
+                                            <x-input-with-label name="address[flat]"
+                                                                :value="$address->flat ?? null"
+                                                                placeholder="Квартира"
+                                                                :messages="$errors->get('address.flat')"/>
+                                        </td>
                                     </tr>
 
 
