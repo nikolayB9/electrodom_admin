@@ -32,6 +32,8 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
     Route::resource('orders', \App\Http\Controllers\OrderController::class)
         ->except('show', 'create', 'store');
+    Route::post('orders/{orderId}/restore', [\App\Http\Controllers\OrderController::class, 'restore'])
+        ->name('orders.restore');
 });
 
 require __DIR__ . '/auth.php';

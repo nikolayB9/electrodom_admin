@@ -48,4 +48,10 @@ class OrderController extends Controller
         return redirect()->route('orders.index')
             ->with('status', 'Заказ № "' . $order->id . '" удален.');
     }
+
+    public function restore(int $orderId)
+    {
+        Order::withTrashed()->find($orderId)->restore();
+        return redirect()->route('orders.edit', $orderId)->with('status', 'Заказ восстановлен.');
+    }
 }

@@ -10,6 +10,8 @@ class OrderFilter extends AbstractFilter
     const DATE = 'date';
     const USER_ID = 'userId';
     const ORDER_BY = 'orderBy';
+    const STATUS = 'status';
+    const TRASHED = 'trashed';
 
     public function getCallbacks(): array
     {
@@ -17,6 +19,8 @@ class OrderFilter extends AbstractFilter
             self::DATE => [$this, 'date'],
             self::USER_ID => [$this, 'userId'],
             self::ORDER_BY => [$this, 'orderBy'],
+            self::STATUS => [$this, 'status'],
+            self::TRASHED => [$this, 'trashed'],
         ];
     }
 
@@ -49,5 +53,15 @@ class OrderFilter extends AbstractFilter
                 $builder->orderBy('id', 'desc');
                 break;
         }
+    }
+
+    protected function status(Builder $builder, $value)
+    {
+        $builder->where('status', $value);
+    }
+
+    protected function trashed(Builder $builder, $value)
+    {
+        $builder->onlyTrashed();
     }
 }

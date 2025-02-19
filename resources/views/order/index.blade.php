@@ -32,6 +32,16 @@
                                     </div>
                                 </div>
                             </form><!-- /.search by date -->
+
+                            <form action="{{ route('orders.index') }}" method="get">
+                                <input name="trashed"
+                                       value="{{ true }}"
+                                       type="hidden">
+                                <button type="submit"
+                                        class="btn btn-sm btn-default">
+                                    Показать удаленные
+                                </button>
+                            </form>
                         </div><!-- /.card-header -->
 
                         <div class="card-body">
@@ -106,7 +116,29 @@
                                         <button type="button" class="btn btn-default"><span
                                                 class="text-bold">Пользователь</span></button>
                                     </th>
-                                    <th>Статус</th>
+                                    <th>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default"><span
+                                                    class="text-bold">Статус</span></button>
+                                            <button type="button" class="btn btn-default dropdown-toggle dropdown-icon"
+                                                    data-toggle="dropdown">
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                @foreach(\App\Enums\Order\StatusEnum::cases() as $statusEnum)
+                                                    <form action="{{ route('orders.index') }}" method="get">
+                                                        <input name="status"
+                                                               value="{{ $statusEnum->value }}"
+                                                               type="hidden">
+                                                        <button type="submit"
+                                                                class="dropdown-item">
+                                                            {{ \App\Enums\Order\StatusEnum::getDescription($statusEnum) }}
+                                                        </button>
+                                                    </form>
+                                                @endforeach
+                                            </div>
+                                        </div><!-- /.order by status -->
+                                    </th>
                                     <th>Действия</th>
                                 </tr>
                                 </thead>
@@ -142,11 +174,21 @@
                                         <td>
                                             {{ $order->getStatusName() }}
                                         </td>
-                                        <td class="d-flex"><a href="{{ route('orders.edit', $order->id) }}"
+                                        <td class="d-flex">
+                                            @if($order->deleted_at)
+                                                <form action="{{ route('orders.restore', $order->id) }}" method="post">
+                                                    @csrf
+                                                    <button type="submit"
+                                                            class="btn btn-primary btn-sm">Восстановить
+                                                    </button>
+                                                </form>
+                                            @else
+                                            <a href="{{ route('orders.edit', $order->id) }}"
                                                               type="button"
                                                               class="btn btn-primary btn-sm mr-2">
                                                 Редактировать
                                             </a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

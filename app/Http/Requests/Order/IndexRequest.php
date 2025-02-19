@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Order;
 
 use App\Enums\Order\OrderByEnum;
+use App\Enums\Order\StatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,7 +28,8 @@ class IndexRequest extends FormRequest
             'date' => ['nullable', 'string', 'max:255'],
             'userId' => ['nullable', 'integer', 'exists:users,id'],
             'orderBy' => ['nullable', Rule::enum(OrderByEnum::class)],
-            'test' => ['string'],
+            'status' => ['nullable', Rule::enum(StatusEnum::class)],
+            'trashed' => ['nullable', 'boolean:true'],
         ];
     }
 
