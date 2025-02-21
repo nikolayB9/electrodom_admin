@@ -13,6 +13,8 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
     Route::resource('users', \App\Http\Controllers\UserController::class)
         ->except('create', 'store', 'show');
+    Route::post('users/{userId}/restore', [\App\Http\Controllers\UserController::class, 'restore'])
+        ->name('users.restore');
 
     Route::resource('categories', \App\Http\Controllers\CategoryController::class)
         ->except('show');

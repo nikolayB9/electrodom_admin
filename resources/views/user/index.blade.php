@@ -34,6 +34,15 @@
                                 </div>
                             </form><!-- /.search by name or email -->
 
+                            <form action="{{ route('users.index') }}" method="get">
+                                <input name="trashed"
+                                       value="{{ true }}"
+                                       type="hidden">
+                                <button type="submit"
+                                        class="btn btn-sm btn-default">
+                                    Удаленные пользователи
+                                </button>
+                            </form><!-- /.show trashed -->
                         </div><!-- /.card-header -->
 
                         <div class="card-body">
@@ -150,17 +159,26 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('users.edit', $user->id) }}"
-                                               type="button"
-                                               class="btn btn-primary btn-sm mr-2 mb-1">
-                                                Редактировать
-                                            </a>
-                                            <!-- Button trigger modal delete user -->
-                                            <button class="btn btn-danger btn-sm"
-                                                    data-toggle="modal"
-                                                    data-target="#modal-delete-user{{ $user->id }}">
-                                                Удалить
-                                            </button>
+                                            @if($user->deleted_at)
+                                                <form action="{{ route('users.restore', $user->id) }}" method="post">
+                                                    @csrf
+                                                    <button type="submit"
+                                                            class="btn btn-primary btn-sm">Восстановить
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <a href="{{ route('users.edit', $user->id) }}"
+                                                   type="button"
+                                                   class="btn btn-primary btn-sm mr-2 mb-1">
+                                                    Редактировать
+                                                </a>
+                                                <!-- Button trigger modal delete user -->
+                                                <button class="btn btn-danger btn-sm"
+                                                        data-toggle="modal"
+                                                        data-target="#modal-delete-user{{ $user->id }}">
+                                                    Удалить
+                                                </button>
+                                            @endif
                                         </td>
                                     </tr>
                                     <!-- Modal delete user -->
@@ -169,8 +187,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title">Удалить пользователя
-                                                        "{{ $user->getFullName() . '; id = ' . $user->id . '; email = ' . $user->email }}
-                                                        " ?
+                                                        "{{ $user->getFullName() . ' (' . $user->email . ')' }}" ?
                                                     </h5>
                                                 </div>
 

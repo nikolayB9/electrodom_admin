@@ -62,6 +62,6 @@ class OrderFilter extends AbstractFilter
 
     protected function trashed(Builder $builder, $value)
     {
-        $builder->onlyTrashed();
+        $builder->onlyTrashed()->whereHas('user');
     }
 }

@@ -25,7 +25,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'status' => ['required', 'integer', Rule::enum(StatusEnum::class)],
-            'address' => ['array:city,street,house,flat'],
+            'address' => ['required', 'array:city,street,house,flat'],
             'address.city' => ['required', 'string', 'max:255'],
             'address.*' => ['nullable', 'string', 'max:255'],
         ];

@@ -37,16 +37,16 @@ class OrderService
             'flat' => $data['flat'],
         ];
 
-        $currentUserAddress = $user->address;
+        $address = $user->address;
 
-        if ($currentUserAddress && $currentUserAddress->canBeDeleted()) {
-            $currentUserAddress->update($addressData);
-        } elseif ($addressData['city'] || $addressData['street'] || $addressData['house'] || $addressData['flat']) {
-            $newAddress = Address::create($addressData);
-            $user->update(['address_id' => $newAddress->id]);
-            return $newAddress;
+        if ($address && $address->canBeDeleted()) {
+            $address->update($addressData);
+            return $address;
         }
-        return $currentUserAddress;
+
+        $newAddress = Address::create($addressData);
+        $user->update(['address_id' => $newAddress->id]);
+        return $newAddress;
     }
 
     public function processProductsForPivot(array $products): array

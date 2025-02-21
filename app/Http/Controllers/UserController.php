@@ -46,8 +46,14 @@ class UserController extends Controller
 
     public function destroy(User $user): RedirectResponse
     {
+        $user->orders()->delete();
         $user->delete();
-
         return Redirect::route('users.index')->with('status', 'Пользователь "' . $user->name . '" удален.');
+    }
+
+    public function restore(int $userId)
+    {
+        User::withTrashed()->find($userId)->restore();
+        return Redirect::route('users.edit', $userId)->with('status', 'Пользователь восстановлен');
     }
 }

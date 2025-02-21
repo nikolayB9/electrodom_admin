@@ -41,7 +41,7 @@
                                         class="btn btn-sm btn-default">
                                     Показать удаленные
                                 </button>
-                            </form>
+                            </form><!-- /.show trashed -->
                         </div><!-- /.card-header -->
 
                         <div class="card-body">

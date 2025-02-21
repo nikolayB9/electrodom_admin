@@ -18,6 +18,7 @@ class IndexRequest extends FormRequest
         return [
             'nameOrEmail' => ['nullable', 'string', 'max:255'],
             'orderBy' => ['nullable', Rule::enum(OrderByEnum::class)],
+            'trashed' => ['nullable', 'boolean:true'],
         ];
     }
 

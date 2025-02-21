@@ -9,12 +9,14 @@ class UserFilter extends AbstractFilter
 {
     const NAME_OR_EMAIL = 'nameOrEmail';
     const ORDER_BY = 'orderBy';
+    const TRASHED = 'trashed';
 
     public function getCallbacks(): array
     {
         return [
             self::NAME_OR_EMAIL => [$this, 'nameOrEmail'],
             self::ORDER_BY => [$this, 'orderBy'],
+            self::TRASHED => [$this, 'trashed'],
         ];
     }
 
@@ -47,5 +49,10 @@ class UserFilter extends AbstractFilter
                 break;
 
         }
+    }
+
+    protected function trashed(Builder $builder, $value)
+    {
+        $builder->onlyTrashed();
     }
 }

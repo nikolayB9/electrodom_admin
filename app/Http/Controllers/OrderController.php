@@ -7,11 +7,17 @@ use App\Http\Filters\OrderFilter;
 use App\Http\Requests\Order\IndexRequest;
 use App\Http\Requests\Order\UpdateRequest;
 use App\Models\Order;
+use App\Services\OrderService;
 
 class OrderController extends Controller
 {
+    public function __construct(private OrderService $orderService)
+    {
+    }
+
     public function index(IndexRequest $request)
     {
+        dd(Order::find(1)->address()->delete());
         $data = $request->validated();
 
         $filter = app()->make(OrderFilter::class, ['queryParams' => array_filter($data)]);
@@ -34,10 +40,13 @@ class OrderController extends Controller
     public function update(UpdateRequest $request, Order $order)
     {
         $data = $request->validated();
+
+        $address = $this->orderService->processAddress($order, $data['address']);
+
         $order->update([
             'status' => $data['status'],
+            'address_id' => $address->id,
         ]);
-        $order->address()->update($data['address']);
 
         return redirect()->route('orders.edit', $order->id)->with('status', 'Данные заказа обновлены.');
     }

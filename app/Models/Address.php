@@ -12,8 +12,18 @@ class Address extends Model
     protected $table = 'addresses';
     protected $guarded = false;
 
-    public function canBeDeleted()
+    public function orders(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return true;
+        return $this->hasMany(Order::class);
+    }
+
+    public function canBeDeleted(): bool
+    {
+        return !$this->orders()->first();
+    }
+
+    public function canBeChangedInTheOrder(Order $order): bool
+    {
+        return !$this->orders()->where('id', '!=', $order->id)->first();
     }
 }
