@@ -25,18 +25,11 @@ class IndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date' => ['nullable', 'string', 'max:255'],
+            'date' => ['nullable', 'date_format:d.m.Y'],
             'userId' => ['nullable', 'integer', 'exists:users,id'],
             'orderBy' => ['nullable', Rule::enum(OrderByEnum::class)],
             'status' => ['nullable', Rule::enum(StatusEnum::class)],
             'trashed' => ['nullable', 'boolean:true'],
         ];
-    }
-
-    protected function prepareForValidation(): void
-    {
-        if (!$this->orderBy) {
-            $this->merge(['orderBy' => OrderByEnum::ID_DESC->value]);
-        }
     }
 }

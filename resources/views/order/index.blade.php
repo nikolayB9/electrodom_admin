@@ -23,7 +23,7 @@
                                            name="date"
                                            value="{{ request()->get('date') }}"
                                            class="form-control float-right"
-                                           placeholder="Поиск заказов по дате гггг-мм-дд">
+                                           placeholder="Поиск заказов по дате">
 
                                     <div class="input-group-append">
                                         <button type="submit" class="btn btn-default">
@@ -33,15 +33,19 @@
                                 </div>
                             </form><!-- /.search by date -->
 
-                            <form action="{{ route('orders.index') }}" method="get">
-                                <input name="trashed"
-                                       value="{{ true }}"
-                                       type="hidden">
-                                <button type="submit"
-                                        class="btn btn-sm btn-default">
-                                    Показать удаленные
-                                </button>
-                            </form><!-- /.show trashed -->
+                            <div class="d-flex">
+                                <form action="{{ route('orders.index') }}" method="get">
+                                    <input name="trashed"
+                                           value="{{ true }}"
+                                           type="hidden">
+                                    <button type="submit"
+                                            class="btn btn-sm btn-default">
+                                        Показать удаленные
+                                    </button>
+                                </form><!-- /.show trashed -->
+
+                                <a href="{{ route('orders.index') }}" class="btn btn-sm btn-default ml-3">Удалить фильтры</a>
+                            </div>
                         </div><!-- /.card-header -->
 
                         <div class="card-body">
@@ -61,6 +65,13 @@
                                             </button>
                                             <div class="dropdown-menu" role="menu">
                                                 <form action="{{ route('orders.index') }}" method="get">
+                                                    @foreach($get as $name => $value)
+                                                        @if($name !== 'orderBy')
+                                                            <input name="{{ $name }}"
+                                                                   value="{{ $value ?? null }}"
+                                                                   type="hidden">
+                                                        @endif
+                                                    @endforeach
                                                     <input name="orderBy"
                                                            value="{{ \App\Enums\Order\OrderByEnum::DATE_NEW_OLD->value }}"
                                                            type="hidden">
@@ -70,6 +81,13 @@
                                                     </button>
                                                 </form>
                                                 <form action="{{ route('orders.index') }}" method="get">
+                                                    @foreach($get as $name => $value)
+                                                        @if($name !== 'orderBy')
+                                                            <input name="{{ $name }}"
+                                                                   value="{{ $value ?? null }}"
+                                                                   type="hidden">
+                                                        @endif
+                                                    @endforeach
                                                     <input name="orderBy"
                                                            value="{{ \App\Enums\Order\OrderByEnum::DATE_OLD_NEW->value }}"
                                                            type="hidden">
@@ -91,6 +109,13 @@
                                             </button>
                                             <div class="dropdown-menu" role="menu">
                                                 <form action="{{ route('orders.index') }}" method="get">
+                                                    @foreach($get as $name => $value)
+                                                        @if($name !== 'orderBy')
+                                                            <input name="{{ $name }}"
+                                                                   value="{{ $value ?? null }}"
+                                                                   type="hidden">
+                                                        @endif
+                                                    @endforeach
                                                     <input name="orderBy"
                                                            value="{{ \App\Enums\Order\OrderByEnum::PRICE_LOW_HIGH->value }}"
                                                            type="hidden">
@@ -100,6 +125,13 @@
                                                     </button>
                                                 </form>
                                                 <form action="{{ route('orders.index') }}" method="get">
+                                                    @foreach($get as $name => $value)
+                                                        @if($name !== 'orderBy')
+                                                            <input name="{{ $name }}"
+                                                                   value="{{ $value ?? null }}"
+                                                                   type="hidden">
+                                                        @endif
+                                                    @endforeach
                                                     <input name="orderBy"
                                                            value="{{ \App\Enums\Order\OrderByEnum::PRICE_HIGH_LOW->value }}"
                                                            type="hidden">
@@ -126,7 +158,14 @@
                                             </button>
                                             <div class="dropdown-menu" role="menu">
                                                 @foreach(\App\Enums\Order\StatusEnum::cases() as $statusEnum)
-                                                    <form action="{{ route('orders.index') }}" method="get">
+                                                    <form action="{{ route('orders.index' ) }}" method="get">
+                                                        @foreach($get as $name => $value)
+                                                            @if($name !== 'status')
+                                                                <input name="{{ $name }}"
+                                                                       value="{{ $value ?? null }}"
+                                                                       type="hidden">
+                                                            @endif
+                                                        @endforeach
                                                         <input name="status"
                                                                value="{{ $statusEnum->value }}"
                                                                type="hidden">
@@ -183,11 +222,11 @@
                                                     </button>
                                                 </form>
                                             @else
-                                            <a href="{{ route('orders.edit', $order->id) }}"
-                                                              type="button"
-                                                              class="btn btn-primary btn-sm mr-2">
-                                                Редактировать
-                                            </a>
+                                                <a href="{{ route('orders.edit', $order->id) }}"
+                                                   type="button"
+                                                   class="btn btn-primary btn-sm mr-2">
+                                                    Редактировать
+                                                </a>
                                             @endif
                                         </td>
                                     </tr>

@@ -10,11 +10,12 @@ class ProductService extends ImageHandlerService
 {
     public function getAttributesWithUnitTitle(int $productId): \Illuminate\Support\Collection
     {
+        //TODO
         $attributes = DB::select(
             'SELECT a.id, CONCAT_WS(", ", a.title, m_u.title) AS title, a_p.value
             FROM attributes AS a LEFT JOIN measure_units AS m_u ON a.measure_unit_id = m_u.id
-            INNER JOIN attribute_product AS a_p ON a_p.product_id = :productId
-            WHERE a.id = a_p.attribute_id
+            INNER JOIN attribute_product AS a_p ON a.id = a_p.attribute_id
+            WHERE a_p.product_id = :productId
             ORDER BY title', ['productId' => $productId]
         );
 

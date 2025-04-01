@@ -3,6 +3,7 @@
 namespace App\Http\Filters;
 
 use App\Enums\Order\OrderByEnum;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
 class OrderFilter extends AbstractFilter
@@ -26,7 +27,9 @@ class OrderFilter extends AbstractFilter
 
     protected function date(Builder $builder, $value)
     {
-        $builder->where('created_at', 'like', "%{$value}%");
+        $date = Carbon::createFromFormat('d.m.Y', $value);
+        $formattedDate = $date->format('Y-m-d');
+        $builder->where('created_at', 'like', "%{$formattedDate}%");
     }
 
     protected function userId(Builder $builder, $value)

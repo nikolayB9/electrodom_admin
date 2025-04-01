@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Order\OrderByEnum;
 use App\Enums\Order\StatusEnum;
 use App\Http\Filters\OrderFilter;
 use App\Http\Requests\Order\IndexRequest;
@@ -17,14 +18,18 @@ class OrderController extends Controller
 
     public function index(IndexRequest $request)
     {
-        dd(Order::find(1)->address()->delete());
         $data = $request->validated();
+
+        if (empty($data['orderBy'])) {
+            $data['orderBy'] = OrderByEnum::ID_DESC->value;
+        }
 
         $filter = app()->make(OrderFilter::class, ['queryParams' => array_filter($data)]);
         $orders = Order::filter($filter);
 
         return view('order.index', [
             'orders' => $orders->with('user')->paginate(15),
+            'get' => $data,
         ]);
     }
 
