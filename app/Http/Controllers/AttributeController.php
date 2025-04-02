@@ -10,39 +10,43 @@ use App\Services\AttributeService;
 
 class AttributeController extends Controller
 {
-    public function __construct(public AttributeService $attributeService)
+    public function __construct(private AttributeService $attributeService)
     {
     }
 
     public function index()
     {
-        $attributes = $this->attributeService->getWithUnitTitle();
-        $measureUnits = MeasureUnit::orderBy('title')->get();
-        return view('attribute.index', compact('attributes', 'measureUnits'));
+        return view('attribute.index', [
+            'attributes' => $this->attributeService->getWithFullTitle(),
+            'measureUnits' => MeasureUnit::orderBy('title')->get(),
+        ]);
     }
 
     public function store(StoreRequest $request)
     {
-        $data = $this->attributeService->processNewMeasureUnit($request->validated());
-        $attribute = Attribute::create($data);
-        return redirect()->route('attributes.index')->with('status', 'Атрибут "' . $attribute->fullTitle() . '" успешно сохранен.');
+        $attribute = Attribute::create([
+            'title' => $request->title,
+            'measure_unit_id' => $this->attributeService->processMeasureUnit($request->validated()),
+        ]);
+        return back()->with('success', 'Атрибут "' . $attribute->getFullTitle() . '" добавлен.');
     }
 
     public function update(UpdateRequest $request, Attribute $attribute)
     {
-        $data = $this->attributeService->processNewMeasureUnit($request->validated());
-        $attribute->update($data);
-        return redirect()->route('attributes.index')->with('status', 'Атрибут "' . $attribute->fullTitle() . '" успешно обновлен.');
+        $attribute->update([
+            'title' => $request->title,
+            'measure_unit_id' => $this->attributeService->processMeasureUnit($request->validated()),
+        ]);
+        return back()->with('success', 'Атрибут "' . $attribute->getFullTitle() . '" обновлен.');
     }
 
     public function destroy(Attribute $attribute)
     {
-        if ($attribute->belongsToTheCategory()) {
-            return back()->withErrors('You cannot delete an attribute "' . $attribute->fullTitle() . '" that is used by at least one category');
+        if (!$attribute->canBeDeleted()) {
+            return back()->with('error', 'Атрибут "' . $attribute->getFullTitle() . '" нельзя удалить.');
         }
 
-        $fullTitle = $attribute->fullTitle();
         $attribute->delete();
-        return redirect()->route('attributes.index')->with('status', 'Атрибут "' . $fullTitle . '" удален.');
+        return back()->with('success', 'Атрибут "' . $attribute->getFullTitle() . '" удален.');
     }
 }

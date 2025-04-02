@@ -24,18 +24,12 @@
                         Единицы измерения
                     </a>
 
-                    @if (session('status'))
-                        <x-alert-success :message="session('status')"/>
+                    @if (session('success'))
+                        <x-alert-success :message="session('success')"/>
                     @endif
 
-                    @if(!empty($errors->get('attributeDeletion')))
-                        <x-alert-danger :messages="$errors->get('attributeDeletion')"/>
-                    @endif
-
-                    @if(!empty($errors->messages()))
-                        @foreach($errors->messages() as $message)
-                            <x-alert-danger :messages="$message"/>
-                        @endforeach
+                    @if (session('error'))
+                        <x-alert-danger :message="session('error')"/>
                     @endif
 
                     <div class="card">
@@ -101,7 +95,7 @@
                                                             <option value="" selected>-</option>
                                                             @foreach($measureUnits as $measureUnit)
                                                                 <option value="{{ $measureUnit->id }}"
-                                                                @selected($measureUnit->id == $attribute->measureUnitId)>
+                                                                    @selected($measureUnit->id == $attribute->measureUnitId)>
                                                                     {{ $measureUnit->title }}
                                                                 </option>
                                                             @endforeach
@@ -118,7 +112,9 @@
                                                                 data-dismiss="modal">
                                                             Отмена
                                                         </button>
-                                                        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                                                        <button type="submit" class="btn btn-primary">Сохранить
+                                                            изменения
+                                                        </button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -226,4 +222,5 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
 </x-app-layout>

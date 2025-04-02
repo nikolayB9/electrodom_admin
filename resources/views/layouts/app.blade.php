@@ -160,5 +160,6 @@
         $('[data-mask]').inputmask()
     })
 </script>
+@stack('scripts')
 </body>
 </html>

@@ -10,26 +10,29 @@ class AttributeService
     /**
      * Get all attributes with measure units in titles as fullTitle.
      */
-    public function getWithUnitTitle(): \Illuminate\Support\Collection
+    public function getWithFullTitle(): \Illuminate\Support\Collection
     {
-        $attributes = DB::select(
-            'SELECT a.id, a.title, m_u.id AS measureUnitId, CONCAT_WS(", ", a.title, m_u.title) AS fullTitle
-            FROM attributes AS a LEFT JOIN measure_units AS m_u ON a.measure_unit_id = m_u.id
-            ORDER BY a.title'
-        );
-
-        return collect($attributes);
+        return DB::table('attributes')
+            ->leftJoin('measure_units', 'attributes.measure_unit_id', '=', 'measure_units.id')
+            ->select('attributes.id', 'attributes.title')
+            ->selectRaw('measure_units.id as measureUnitId')
+            ->selectRaw('CONCAT_WS(", ", attributes.title, measure_units.title) AS fullTitle')
+            ->orderBy('attributes.title')
+            ->get();
     }
 
-    public function processNewMeasureUnit(array $data): array
+    public function processMeasureUnit(array $data): ?int
     {
-        if (!empty($data['new_measure_unit'])) {
-            $measureUnit = MeasureUnit::create([
-                'title' =>  $data['new_measure_unit'],
-            ]);
-            $data['measure_unit_id'] = $measureUnit->id;
+        if (!empty($data['measure_unit_id'])) {
+            return $data['measure_unit_id'];
         }
-        unset($data['new_measure_unit']);
-        return $data;
+
+        if (!empty($data['new_measure_unit'])) {
+            return MeasureUnit::create([
+                'title' =>  $data['new_measure_unit'],
+            ])->id;
+        }
+
+        return null;
     }
 }

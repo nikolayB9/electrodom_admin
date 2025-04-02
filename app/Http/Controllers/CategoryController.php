@@ -44,7 +44,7 @@ class CategoryController extends Controller
             'imgParams' => $this->categoryService::getImgParams(),
             'parentCategoryId' => $category->parentCategoryId(),
             'previousCategoryId' => $category->previousCategoryId(),
-            'attributes' => $attributeService->getWithUnitTitle(),
+            'attributes' => $attributeService->getWithFullTitle(),
             'categoryAttributesIds' => $category->attributesIds(),
             'parentAttributesIds' => $category->attributesIdsOfTheParentCategory(),
         ]);

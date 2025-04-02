@@ -17,14 +17,9 @@ class Attribute extends Model
         return $this->belongsTo(MeasureUnit::class);
     }
 
-    public function measureUnitId(): ?int
+    public function getFullTitle()
     {
-        return $this->measureUnit->id ?? null;
-    }
-
-    public function fullTitle()
-    {
-        return $this->measureUnit ? $this->title . ', ' . $this->measureUnit->title : $this->title;
+        return $this->measure_unit_id ? $this->title . ', ' . $this->measureUnit->title : $this->title;
     }
 
     public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -32,8 +27,8 @@ class Attribute extends Model
         return $this->belongsToMany(Category::class);
     }
 
-    public function belongsToTheCategory(): bool
+    public function canBeDeleted(): bool
     {
-        return (bool)$this->categories()->select('id')->first();
+        return !$this->categories()->first();
     }
 }
