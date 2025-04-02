@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests\Attribute;
 
-use Illuminate\Database\Query\Builder;
+use App\Models\Attribute;
+use App\Models\MeasureUnit;
+use Closure;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
+use Illuminate\Validation\ValidationException;
 
 class UpdateRequest extends FormRequest
 {
@@ -25,28 +26,47 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'measure_unit_id' => ['nullable', 'integer', 'exists:measure_units,id', 'prohibits:new_measure_unit'],
-            'new_measure_unit' => ['nullable', 'string', 'max:255', 'unique:measure_units,title'],
+            'updatedMeasureUnitId' => ['nullable', 'integer', 'exists:measure_units,id', 'prohibits:updatedNewMeasureUnit'],
+            'updatedNewMeasureUnit' => ['nullable', 'string', 'max:255', 'unique:measure_units,title'],
+            'updatedTitle' => [
+                'required',
+                'string',
+                'max:255',
+                function (string $attribute, mixed $value, Closure $fail) {
+                    if (empty($this->updatedNewMeasureUnit)) {
+                        if (Attribute::where('title', $value)
+                            ->where('measure_unit_id', $this->updatedMeasureUnitId)
+                            ->whereNot('id', $this->attribute->id)
+                            ->first()) {
+                            $fail("The {$attribute} has already been taken.");
+                        }
+                    }
+                },
+            ],
         ];
     }
 
-    /**
-     * If the attribute's title is not unique, then the attribute's units of measurement must differ.
-     */
-    public function after(): array
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
-        return [
-            function (Validator $validator) {
-                $validated = $validator->validated();
-                if (empty($validated['new_measure_unit'])) {
-                    request()->validate([
-                        'title' => Rule::unique('attributes', 'title')
-                            ->where(fn(Builder $query) => $query->where('measure_unit_id', $validated['measure_unit_id']))
-                            ->ignore(request()->attribute)
-                    ]);
-                }
-            }
-        ];
+        $validator->errors()->add('attributeIdError', $this->attribute->id);
+        throw new ValidationException($validator, back()->withErrors($validator->errors())->withInput());
+    }
+
+    protected function passedValidation(): void
+    {
+        if (!empty($this->updatedMeasureUnitId)) {
+            $id = $this->updatedMeasureUnitId;
+        } elseif (!empty($this->updatedNewMeasureUnit)) {
+            $id = MeasureUnit::create([
+                'title' => $this->updatedNewMeasureUnit,
+            ])->id;
+        } else {
+            $id = null;
+        }
+
+        $this->replace([
+            'title' => $this->updatedTitle,
+            'measure_unit_id' => $id,
+        ]);
     }
 }

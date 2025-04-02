@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\Attribute;
 
-use Illuminate\Database\Query\Builder;
+use App\Models\Attribute;
+use App\Models\MeasureUnit;
+use Closure;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 
 class StoreRequest extends FormRequest
 {
@@ -25,27 +25,40 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'measure_unit_id' => ['nullable', 'integer', 'exists:measure_units,id', 'prohibits:new_measure_unit'],
-            'new_measure_unit' => ['nullable', 'string', 'max:255', 'unique:measure_units,title'],
+            'measureUnitId' => ['nullable', 'integer', 'exists:measure_units,id', 'prohibits:newMeasureUnit'],
+            'newMeasureUnit' => ['nullable', 'string', 'max:255', 'unique:measure_units,title'],
+            'title' => [
+                'required',
+                'string',
+                'max:255',
+                function (string $attribute, mixed $value, Closure $fail) {
+                    if (empty($this->newMeasureUnit)) {
+                        if (Attribute::where('title', $value)
+                            ->where('measure_unit_id', $this->measureUnitId)
+                            ->first()) {
+                            $fail("The {$attribute} has already been taken.");
+                        }
+                    }
+                },
+            ],
         ];
     }
 
-    /**
-     * If the attribute's title is not unique, then the attribute's units of measurement must differ.
-     */
-    public function after(): array
+    protected function passedValidation(): void
     {
-        return [
-            function (Validator $validator) {
-                $validated = $validator->validated();
-                if (empty($validated['new_measure_unit'])) {
-                    request()->validate([
-                        'title' => Rule::unique('attributes', 'title')
-                            ->where(fn(Builder $query) => $query->where('measure_unit_id', $validated['measure_unit_id']))
-                    ]);
-                }
-            }
-        ];
+        if (!empty($this->measureUnitId)) {
+            $id = $this->measureUnitId;
+        } elseif (!empty($this->newMeasureUnit)) {
+            $id = MeasureUnit::create([
+                'title' => $this->newMeasureUnit,
+            ])->id;
+        } else {
+            $id = null;
+        }
+
+        $this->replace([
+            'title' => $this->title,
+            'measure_unit_id' => $id,
+        ]);
     }
 }

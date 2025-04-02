@@ -84,27 +84,31 @@
                                                     @method('patch')
                                                     <div class="modal-body">
 
-                                                        <x-input-with-label name="title"
-                                                                            :value="$attribute->title"
-                                                                            label="Наименование"
+                                                        <x-input-with-label label="Наименование"
+                                                                            name="updatedTitle"
+                                                                            value="{{ $errors->first('attributeIdError') === $attribute->id
+                                                                            ? old('updatedTitle') : $attribute->title }}"
                                                                             placeholder="Введите наименование атрибута"
+                                                                            :messages="$errors->first('attributeIdError') === $attribute->id
+                                                                            ? $errors->get('updatedTitle') : null"
                                                                             required/>
 
-                                                        <x-select name="measure_unit_id"
-                                                                  label="Единица измерения">
+                                                        <x-select name="updatedMeasureUnitId"
+                                                                  label="Единица измерения"
+                                                                  :messages="$errors->first('attributeIdError') === $attribute->id
+                                                                            ? $errors->get('updatedMeasureUnitId') : null">
                                                             <option value="" selected>-</option>
                                                             @foreach($measureUnits as $measureUnit)
                                                                 <option value="{{ $measureUnit->id }}"
-                                                                    @selected($measureUnit->id == $attribute->measureUnitId)>
-                                                                    {{ $measureUnit->title }}
-                                                                </option>
+                                                                        @selected($attribute->measure_unit_id === $measureUnit->id ||
+                    ($errors->first('attributeIdError') === $attribute->id && (int)old('updatedMeasureUnitId') === $measureUnit->id))>{{ $measureUnit->title }}</option>
                                                             @endforeach
                                                         </x-select>
 
-                                                        <x-input-with-label name="new_measure_unit"
-                                                                            value=""
-                                                                            placeholder="Создать новую единицу измерения"/>
-
+                                                        <x-input-with-label name="updatedNewMeasureUnit"
+                                                                            placeholder="Создать новую единицу измерения"
+                                                                            :messages="$errors->first('attributeIdError') === $attribute->id
+                                                                            ? $errors->get('updatedNewMeasureUnit') : null"/>
                                                     </div>
 
                                                     <div class="modal-footer justify-content-end">
@@ -180,25 +184,25 @@
                                     @csrf
                                     <div class="modal-body">
 
-                                        <x-input-with-label name="title"
-                                                            value=""
-                                                            label="Наименование"
+                                        <x-input-with-label label="Наименование"
+                                                            name="title"
                                                             placeholder="Введите наименование атрибута"
+                                                            :messages="$errors->get('title')"
                                                             required/>
 
-                                        <x-select name="measure_unit_id"
-                                                  label="Единица измерения">
+                                        <x-select name="measureUnitId"
+                                                  label="Единица измерения"
+                                                  :messages="$errors->get('measureUnitId')">
                                             <option value="" selected>-</option>
                                             @foreach($measureUnits as $measureUnit)
-                                                <option value="{{ $measureUnit->id }}">
-                                                    {{ $measureUnit->title }}
-                                                </option>
+                                                <option value="{{ $measureUnit->id }}"
+                                                        @selected((int)old('measureUnitId') === $measureUnit->id)>{{ $measureUnit->title }}</option>
                                             @endforeach
                                         </x-select>
 
-                                        <x-input-with-label name="new_measure_unit"
-                                                            value=""
-                                                            placeholder="Создать новую единицу измерения"/>
+                                        <x-input-with-label name="newMeasureUnit"
+                                                            placeholder="Создать новую единицу измерения"
+                                                            :messages="$errors->get('newMeasureUnit')"/>
 
                                     </div>
 
@@ -223,4 +227,17 @@
     </section>
     <!-- /.content -->
 
+    @pushIf($errors->has('title') || $errors->has('measureUnitId') || $errors->has('newMeasureUnit'), 'scripts')
+        <script>
+            $('#modal-create-attribute').modal('show');
+        </script>
+    @endpushIf
+
+    @pushIf($errors->has('attributeIdError'), 'scripts')
+        <script>
+            let attributeId = @json($errors->first('attributeIdError'));
+            console.log(attributeId)
+            $(`#modal-edit-attribute${attributeId}`).modal('show');
+        </script>
+    @endpushIf
 </x-app-layout>

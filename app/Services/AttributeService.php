@@ -14,25 +14,9 @@ class AttributeService
     {
         return DB::table('attributes')
             ->leftJoin('measure_units', 'attributes.measure_unit_id', '=', 'measure_units.id')
-            ->select('attributes.id', 'attributes.title')
-            ->selectRaw('measure_units.id as measureUnitId')
+            ->select('attributes.id', 'attributes.title', 'attributes.measure_unit_id')
             ->selectRaw('CONCAT_WS(", ", attributes.title, measure_units.title) AS fullTitle')
             ->orderBy('attributes.title')
             ->get();
-    }
-
-    public function processMeasureUnit(array $data): ?int
-    {
-        if (!empty($data['measure_unit_id'])) {
-            return $data['measure_unit_id'];
-        }
-
-        if (!empty($data['new_measure_unit'])) {
-            return MeasureUnit::create([
-                'title' =>  $data['new_measure_unit'],
-            ])->id;
-        }
-
-        return null;
     }
 }

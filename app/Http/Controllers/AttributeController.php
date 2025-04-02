@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\AttributeData;
 use App\Http\Requests\Attribute\StoreRequest;
 use App\Http\Requests\Attribute\UpdateRequest;
 use App\Models\Attribute;
@@ -24,19 +25,15 @@ class AttributeController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $attribute = Attribute::create([
-            'title' => $request->title,
-            'measure_unit_id' => $this->attributeService->processMeasureUnit($request->validated()),
-        ]);
+        $data = AttributeData::from($request->all());
+        $attribute = Attribute::create($data->all());
         return back()->with('success', 'Атрибут "' . $attribute->getFullTitle() . '" добавлен.');
     }
 
     public function update(UpdateRequest $request, Attribute $attribute)
     {
-        $attribute->update([
-            'title' => $request->title,
-            'measure_unit_id' => $this->attributeService->processMeasureUnit($request->validated()),
-        ]);
+        $data = AttributeData::from($request->all());
+        $attribute->update($data->all());
         return back()->with('success', 'Атрибут "' . $attribute->getFullTitle() . '" обновлен.');
     }
 
