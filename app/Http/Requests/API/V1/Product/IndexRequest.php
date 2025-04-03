@@ -3,7 +3,6 @@
 namespace App\Http\Requests\API\V1\Product;
 
 use App\Enums\Product\OrderByEnum;
-use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -34,12 +33,5 @@ class IndexRequest extends FormRequest
             'showBy' => ['nullable', 'integer', 'max:100'],
             'page' => ['nullable', 'integer'],
         ];
-    }
-
-    protected function passedValidation(): void
-    {
-        if ($this->categoryId) {
-            $this->merge(['categories' => Category::find($this->categoryId)->getIdsIncludingChildCategories()]);
-        }
     }
 }

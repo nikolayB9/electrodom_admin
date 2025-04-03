@@ -3,12 +3,13 @@
 namespace App\Http\Filters;
 
 use App\Enums\Product\OrderByEnum;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Builder;
 
 class ProductFilter extends AbstractFilter
 {
     const TITLE = 'title';
-    const CATEGORIES = 'categories';
+    const CATEGORY_ID = 'categoryId';
     const ATTRIBUTES = 'attributes';
     const PRICE_MIN = 'priceMin';
     const PRICE_MAX = 'priceMax';
@@ -18,7 +19,7 @@ class ProductFilter extends AbstractFilter
     {
         return [
             self::TITLE => [$this, 'title'],
-            self::CATEGORIES => [$this, 'categories'],
+            self::CATEGORY_ID => [$this, 'categoryId'],
             self::PRICE_MIN => [$this, 'priceMin'],
             self::PRICE_MAX => [$this, 'priceMax'],
             self::ATTRIBUTES => [$this, 'attributes'],
@@ -31,9 +32,10 @@ class ProductFilter extends AbstractFilter
         $builder->where('title', 'like', "%{$value}%");
     }
 
-    protected function categories(Builder $builder, $value)
+    protected function categoryId(Builder $builder, $value)
     {
-        $builder->whereIn('category_id', $value);
+        $ids = Category::find($value)->getIdsIncludingChildCategories();
+        $builder->whereIn('category_id', $ids);
     }
 
     protected function attributes(Builder $builder, $value)

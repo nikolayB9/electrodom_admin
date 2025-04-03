@@ -20,14 +20,13 @@ class ProductController extends Controller
 
     public function index(IndexRequest $request)
     {
-        $data = $request->only('title', 'categories', 'orderBy');
-
-        $filter = app()->make(ProductFilter::class, ['queryParams' => array_filter($data)]);
+        $filter = app()->make(ProductFilter::class, ['queryParams' => array_filter($request->validated())]);
         $products = Product::filter($filter)->with('category')->paginate(15);
 
         return view('product.index', [
             'products' => $products,
             'categories' => $this->categoryService->getLastNestingLevelCategories(),
+            'get' => $request->validated(),
         ]);
     }
 

@@ -28,6 +28,13 @@
                         <div class="card-header">
                             <form action="{{ route('products.index') }}" method="get">
                                 <div class="input-group input-group-sm float-right" style="width: 400px; height: 46px;">
+                                    @foreach($get as $name => $value)
+                                        @if($name !== 'title')
+                                            <input name="{{ $name }}"
+                                                   value="{{ $value }}"
+                                                   type="hidden">
+                                        @endif
+                                    @endforeach
                                     <input style=height:46px;"
                                            type="text"
                                            name="title"
@@ -42,6 +49,8 @@
                                     </div>
                                 </div>
                             </form><!-- /.search by title -->
+
+                            <a href="{{ route('products.index') }}" class="btn btn-sm btn-default ml-3">Удалить фильтры</a>
                         </div><!-- /.card-header -->
 
                         <div class="card-body">
@@ -58,6 +67,13 @@
                                             </button>
                                             <div class="dropdown-menu" role="menu">
                                                 <form action="{{ route('products.index') }}" method="get">
+                                                    @foreach($get as $name => $value)
+                                                        @if($name !== 'orderBy')
+                                                            <input name="{{ $name }}"
+                                                                   value="{{ $value }}"
+                                                                   type="hidden">
+                                                        @endif
+                                                    @endforeach
                                                     <input name="orderBy"
                                                            value="{{ \App\Enums\Product\OrderByEnum::ID_ASC->value }}"
                                                            type="hidden">
@@ -67,6 +83,13 @@
                                                     </button>
                                                 </form>
                                                 <form action="{{ route('products.index') }}" method="get">
+                                                    @foreach($get as $name => $value)
+                                                        @if($name !== 'orderBy')
+                                                            <input name="{{ $name }}"
+                                                                   value="{{ $value }}"
+                                                                   type="hidden">
+                                                        @endif
+                                                    @endforeach
                                                     <input name="orderBy"
                                                            value="{{ \App\Enums\Product\OrderByEnum::ID_DESC->value }}"
                                                            type="hidden">
@@ -88,6 +111,13 @@
                                             </button>
                                             <div class="dropdown-menu" role="menu">
                                                 <form action="{{ route('products.index') }}" method="get">
+                                                    @foreach($get as $name => $value)
+                                                        @if($name !== 'orderBy')
+                                                            <input name="{{ $name }}"
+                                                                   value="{{ $value }}"
+                                                                   type="hidden">
+                                                        @endif
+                                                    @endforeach
                                                     <input name="orderBy"
                                                            value="{{ \App\Enums\Product\OrderByEnum::NAME_A_Z->value }}"
                                                            type="hidden">
@@ -97,6 +127,13 @@
                                                     </button>
                                                 </form>
                                                 <form action="{{ route('products.index') }}" method="get">
+                                                    @foreach($get as $name => $value)
+                                                        @if($name !== 'orderBy')
+                                                            <input name="{{ $name }}"
+                                                                   value="{{ $value }}"
+                                                                   type="hidden">
+                                                        @endif
+                                                    @endforeach
                                                     <input name="orderBy"
                                                            value="{{ \App\Enums\Product\OrderByEnum::NAME_Z_A->value }}"
                                                            type="hidden">
@@ -118,6 +155,13 @@
                                             </button>
                                             <div class="dropdown-menu" role="menu">
                                                 <form action="{{ route('products.index') }}" method="get">
+                                                    @foreach($get as $name => $value)
+                                                        @if($name !== 'orderBy')
+                                                            <input name="{{ $name }}"
+                                                                   value="{{ $value }}"
+                                                                   type="hidden">
+                                                        @endif
+                                                    @endforeach
                                                     <input name="orderBy"
                                                            value="{{ \App\Enums\Product\OrderByEnum::PRICE_LOW_HIGH->value }}"
                                                            type="hidden">
@@ -127,6 +171,13 @@
                                                     </button>
                                                 </form>
                                                 <form action="{{ route('products.index') }}" method="get">
+                                                    @foreach($get as $name => $value)
+                                                        @if($name !== 'orderBy')
+                                                            <input name="{{ $name }}"
+                                                                   value="{{ $value }}"
+                                                                   type="hidden">
+                                                        @endif
+                                                    @endforeach
                                                     <input name="orderBy"
                                                            value="{{ \App\Enums\Product\OrderByEnum::PRICE_HIGH_LOW->value }}"
                                                            type="hidden">
@@ -149,6 +200,13 @@
                                             <div class="dropdown-menu" role="menu" style="z-index: 10000;">
                                                 @foreach($categories as $category)
                                                     <form action="{{ route('products.index') }}" method="get">
+                                                        @foreach($get as $name => $value)
+                                                            @if($name !== 'categoryId')
+                                                                <input name="{{ $name }}"
+                                                                       value="{{ $value }}"
+                                                                       type="hidden">
+                                                            @endif
+                                                        @endforeach
                                                         <input name="categoryId"
                                                                value="{{ $category->id }}"
                                                                type="hidden">
