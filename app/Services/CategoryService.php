@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Category;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 
 class CategoryService extends ImageHandlerService
@@ -12,17 +13,14 @@ class CategoryService extends ImageHandlerService
      */
     public function getWithLevels(): \Illuminate\Support\Collection
     {
-        $categories = DB::select(
-            'SELECT child.id, child.title, (COUNT(parent.id) - 1) AS level
-            FROM categories AS child,
-                 categories AS parent
-            WHERE child.lft BETWEEN parent.lft AND parent.rgt
-            GROUP BY child.id
-            ORDER BY child.lft'
-
-        );
-
-        return collect($categories);
+        return DB::table('categories AS child')
+            ->select('child.id', 'child.title', DB::raw('COUNT(parent.id) - 1 AS level'))
+            ->join('categories AS parent', function (JoinClause $join) {
+                $join->whereRaw('child.lft BETWEEN parent.lft AND parent.rgt');
+            })
+            ->groupBy('child.id')
+            ->orderBy('child.lft')
+            ->get();
     }
 
     /**
@@ -32,16 +30,15 @@ class CategoryService extends ImageHandlerService
     {
         $maxLevel = config('categories.max_nesting_level');
 
-        $categories = DB::select(
-            'SELECT child.id, child.title
-            FROM categories AS child,
-                 categories AS parent
-            WHERE child.lft BETWEEN parent.lft AND parent.rgt
-            GROUP BY child.id
-            HAVING COUNT(parent.id) - 1 = :maxLevel
-            ORDER BY child.lft', ['maxLevel' => $maxLevel]
-        );
-        return collect($categories);
+        return DB::table('categories AS child')
+            ->select('child.id', 'child.title')
+            ->join('categories AS parent', function (JoinClause $join) {
+                $join->whereRaw('child.lft BETWEEN parent.lft AND parent.rgt');
+            })
+            ->groupBy('child.id')
+            ->havingRaw('COUNT(parent.id) - 1 = :maxLevel', ['maxLevel' => $maxLevel])
+            ->orderBy('child.lft')
+            ->get();
     }
 
     /**
@@ -49,10 +46,13 @@ class CategoryService extends ImageHandlerService
      */
     public function getLevelById(int $categoryId): ?int
     {
-        return DB::scalar('SELECT (COUNT(parent.id) - 1)
-                        FROM categories AS parent, categories as child
-                        WHERE child.lft BETWEEN parent.lft AND parent.rgt
-                        AND child.id = :id', ['id' => $categoryId]);
+        return DB::table('categories AS child')
+            ->selectRaw('COUNT(parent.id) - 1 AS level')
+            ->join('categories AS parent', fn (JoinClause $join) =>
+                $join->whereRaw('child.lft BETWEEN parent.lft AND parent.rgt')
+                    ->where('child.id', $categoryId)
+            )
+            ->value('level');
     }
 
     public function add(array $data): Category

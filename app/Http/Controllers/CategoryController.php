@@ -6,7 +6,6 @@ use App\Http\Requests\Category\StoreRequest;
 use App\Http\Requests\Category\UpdateAttributesRequest;
 use App\Http\Requests\Category\UpdateRequest;
 use App\Models\Category;
-use App\Models\Product;
 use App\Services\AttributeService;
 use App\Services\CategoryService;
 
